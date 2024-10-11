@@ -25,8 +25,8 @@ public class Mapa {
         this.xCentro = 1920 / 2; // Mitad de la resolución horizontal (1900)
         this.yInicial = yInicial; // Posición vertical inicial
         this.entorno = entorno; // Inicializa el entorno
-        this.imagen = Toolkit.getDefaultToolkit().getImage("C:\\Users\\destr\\Desktop\\Tarea progra\\ProyectoLimpio\\Plataformas.png");
-        this.fondo = Toolkit.getDefaultToolkit().getImage("C:\\Users\\destr\\Desktop\\Tarea progra\\ProyectoLimpio\\Fondo.png"); // Carga la imagen de fondo
+        this.imagen = Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Plataformas.png");
+        this.fondo = Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Fondo.png"); // Carga la imagen de fondo
     }
 
     // Método para dibujar el fondo

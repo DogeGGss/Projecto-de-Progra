@@ -1,5 +1,7 @@
 package juego;
 
+import java.io.File;
+
 import entorno.Entorno;
 import entorno.InterfaceJuego;
 
@@ -50,6 +52,7 @@ public class Juego extends InterfaceJuego {
         }
         if (entorno.estaPresionada('a')) {
             pep.mover(-pep.velocidad); // Mueve Pep a la izquierda
+           // pep.imagen=ImageIO.read(new File("C:\Users\Rodrigo\Desktop\progra  1 tp\Projecto-de-Progra\ProyectoLimpio\Happy-Minion-Invertida.png"));
         }
     }
 
@@ -58,3 +61,8 @@ public class Juego extends InterfaceJuego {
         Juego juego = new Juego(); // Crea una instancia de Juego
     }
 }
+
+//pendiente
+//hacer una clase de mapas[] que contenga todas las islas y mecanica de gravedad ahi tmb
+//crear la clase gnomo y tortuga
+
