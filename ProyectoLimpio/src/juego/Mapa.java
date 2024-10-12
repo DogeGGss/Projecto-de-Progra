@@ -1,55 +1,80 @@
-package juego; 
+package juego;
 
 import java.awt.Image;
-import java.awt.Color;
 import entorno.Entorno;
 import java.awt.Toolkit;
 
 public class Mapa {
-    private int xCentro; // Para centrar horizontalmente
-    private int yInicial; // Para la posición vertical inicial
+    private int xCentro;
+    private int yInicial;
     private int ancho;
     private int alto;
     private int cantidadFilas;
     private Entorno entorno;
     private Image imagen;
     private Image fondo;
-    private int espaciadoHorizontal = 200; // Espacio horizontal entre rectángulos
-    private int espaciadoVertical = 150;   // Espacio vertical entre filas
+    private int espaciadoHorizontal = 200;
+    private int espaciadoVertical = 150;
 
-    // Constructor
     public Mapa(int xInicial, int yInicial, int ancho, int alto, int cantidadFilas, Entorno entorno) {
-        this.cantidadFilas = cantidadFilas; // Número de filas en la pirámide
-        this.ancho = ancho; // Ancho de cada rectángulo
-        this.alto = alto;  // Altura de cada rectángulo
-        this.xCentro = 1920 / 2; // Mitad de la resolución horizontal (1900)
-        this.yInicial = yInicial; // Posición vertical inicial
-        this.entorno = entorno; // Inicializa el entorno
-        this.imagen = Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Plataformas.png");
-        this.fondo = Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Fondo.png"); // Carga la imagen de fondo
+        this.cantidadFilas = cantidadFilas;
+        this.ancho = ancho;
+        this.alto = alto;
+        this.xCentro = 1920 / 2;
+        this.yInicial = yInicial;
+        this.entorno = entorno;
+        this.imagen = Toolkit.getDefaultToolkit().getImage("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\Plataformas.png");
+        this.fondo = Toolkit.getDefaultToolkit().getImage("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\Fondo.png");
     }
 
-    // Método para dibujar el fondo
     public void dibujarFondo() {
-        entorno.dibujarImagen(fondo, 960, 530, 0, 12); // Dibuja la imagen de fondo en la posición (0, 0)
+        entorno.dibujarImagen(fondo, 960, 530, 0, 12);
     }
 
-    // Método para dibujar los rectángulos en el entorno
-    public void dibujarRectangulos() {
+    public boolean verificarColision(Pep pep) {
         for (int fila = 0; fila < cantidadFilas; fila++) {
-            int cantidadRectangulos = cantidadFilas - fila; // Número de rectángulos en la fila actual
-            int anchoTotalFila = cantidadRectangulos * (ancho + espaciadoHorizontal) - espaciadoHorizontal; // Ancho total de la fila
-
-            // Calcula la posición inicial X para centrar la fila en la pantalla
+            int cantidadRectangulos = cantidadFilas - fila;
+            int anchoTotalFila = cantidadRectangulos * (ancho + espaciadoHorizontal) - espaciadoHorizontal;
             int xInicial = xCentro - (anchoTotalFila / 2);
-
-            // Calcula la posición Y de la fila, ajustando el espacio vertical
             int y = yInicial - fila * (alto + espaciadoVertical);
 
             for (int i = 0; i < cantidadRectangulos; i++) {
-                // Calcula la posición X de cada rectángulo en la fila
                 int x = xInicial + i * (ancho + espaciadoHorizontal);
-                entorno.dibujarImagen(imagen, x, y, 0, 6); // Dibuja la imagen en el entorno
+                if (pep.colisionaCon(x, y, ancho, alto)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public int obtenerYPlataforma(Pep pep) {
+        for (int fila = 0; fila < cantidadFilas; fila++) {
+            int cantidadRectangulos = cantidadFilas - fila;
+            int anchoTotalFila = cantidadRectangulos * (ancho + espaciadoHorizontal) - espaciadoHorizontal;
+            int xInicial = xCentro - (anchoTotalFila / 2);
+            int y = yInicial - fila * (alto + espaciadoVertical);
+
+            for (int i = 0; i < cantidadRectangulos; i++) {
+                int x = xInicial + i * (ancho + espaciadoHorizontal);
+                if (pep.colisionaCon(x, y, ancho, alto)) {
+                    return y;
+                }
+            }
+        }
+        return Integer.MAX_VALUE;
+    }
+
+    public void dibujarRectangulos() {
+        for (int fila = 0; fila < cantidadFilas; fila++) {
+            int cantidadRectangulos = cantidadFilas - fila;
+            int anchoTotalFila = cantidadRectangulos * (ancho + espaciadoHorizontal) - espaciadoHorizontal;
+            int xInicial = xCentro - (anchoTotalFila / 2);
+            int y = yInicial - fila * (alto + espaciadoVertical);
+
+            for (int i = 0; i < cantidadRectangulos; i++) {
+                int x = xInicial + i * (ancho + espaciadoHorizontal);
+                entorno.dibujarImagen(imagen, x, y, 0, 6);
             }
         }
     }
