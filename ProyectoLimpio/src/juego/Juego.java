@@ -1,8 +1,6 @@
 package juego;
 
-//cosas a solucionar en esta version: gravedad rara cuando se trata de mover en el aire (segun la consigna el salto es solo vertical pero cuando apretamos un voton la graverdad
-//se hace mucho mas fuerte y baja mas rapido)
-//Fallo de colision con las plataformas cuando pep se choca con ella de forma horizontal o desde abajo, arreglar eso. 
+//cosas a solucionar en esta version: 
 //vamos a tener que agrandar el tamaño de las plataformas en X creo yo, Son algo chicas.
 
 
@@ -49,18 +47,7 @@ public class Juego extends InterfaceJuego {
 
         pep.dibujar();
     
-        if (entorno.estaPresionada('d')) {
-            pep.mover();
-        } else if (entorno.estaPresionada('a')) {
-            pep.mover();
-        }
-
-        if (entorno.sePresiono('w')) { // Si se presiona la tecla de espacio
-            pep.saltar(); // Llama al método de salto de Pep
-            System.out.println("acabo de apretar saltar");
-        }
-        
-
+        pep.mover();
     }
 
     public static void main(String[] args) {
