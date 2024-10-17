@@ -55,7 +55,10 @@ public class Juego extends InterfaceJuego {
     public void tick() {
         
         miMapa.dibujarFondo();
+       
         miMapa.dibujarRectangulos();
+
+        
     
         //boolean hayColision = miMapa.verificarColision(pep);
         //int yPlataforma = miMapa.obtenerYPlataforma(pep);

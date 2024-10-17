@@ -31,22 +31,21 @@ public ConjuntoIslas(Isla[] islas, Entorno entorno, int cantidadFilas, int ancho
    }
 
 
-
+   
+ //arreglar esta funcion. Pensar en una nueva logica.
+ // idea: cada isla es unica y deben imprimirse por separado.
    public void dibujarRectangulos() {
-
-    for (Isla isla : islas) {
-
-    for (int fila = 0; fila < cantidadFilas; fila++) {
-        int cantidadRectangulos = cantidadFilas - fila;
+    int k=0;
+    for (int fila = 0; fila < this.cantidadFilas; fila++) {
+        int cantidadRectangulos = this.cantidadFilas - fila;
         int anchoTotalFila = cantidadRectangulos * (this.anchoIsla + espaciadoHorizontal) - espaciadoHorizontal;
-        int xInicial = isla.getxCentro() - (anchoTotalFila / 2);
-        int y = isla.getyInicial()- fila * (altoIsla + espaciadoVertical);
+        int xInicial = islas[k].getxCentro() - (anchoTotalFila / 2);
+        int y = islas[k].getyInicial()- fila * (altoIsla + espaciadoVertical);
         for (int i = 0; i < cantidadRectangulos; i++) {
             int x = xInicial + i * (anchoIsla + espaciadoHorizontal);
-            entorno.dibujarImagen(isla.getImagen(), x, y, 0, 6);
+            entorno.dibujarImagen(islas[k].getImagen(), x, y, 0, 6);
         }
     }
-}
 }
 
 public void dibujarFondo() {
