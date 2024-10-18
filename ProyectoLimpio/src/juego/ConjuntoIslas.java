@@ -12,14 +12,12 @@ public class ConjuntoIslas {
    final int altoIsla;
    final int espaciadoHorizontal = 200;
    final int espaciadoVertical = 150;
-   Image fondo=Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Fondo.png");
+   Image fondo=Toolkit.getDefaultToolkit().getImage("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\Fondo.png");
 
 
    public Image getFondo() {
     return fondo;
 }
-
-
 
 public ConjuntoIslas(Isla[] islas, Entorno entorno, int cantidadFilas, int anchoIsla, int altoIsla){
     this.islas=islas;
@@ -31,19 +29,25 @@ public ConjuntoIslas(Isla[] islas, Entorno entorno, int cantidadFilas, int ancho
    }
 
    public void dibujarRectangulos() {
-    int k=0;
+    int k = 0;
     for (int fila = 0; fila < this.cantidadFilas; fila++) {
-        int cantidadRectangulos = this.cantidadFilas - fila;
-        int anchoTotalFila = cantidadRectangulos * (this.anchoIsla + espaciadoHorizontal) - espaciadoHorizontal;
-        int xInicial = islas[k].getxCentro() - (anchoTotalFila / 2);
-        int y = islas[k].getyInicial()- fila * (altoIsla + espaciadoVertical);
-        for (int i = 0; i < cantidadRectangulos; i++) {     
-            int x = xInicial + i * (anchoIsla + espaciadoHorizontal);
-            entorno.dibujarImagen(islas[k].getImagen(), x, y, 0, 6);
-            k++;
+        // Calcular el número de islas en la fila actual (decreciente)
+        int numIslasEnFila = this.cantidadFilas - fila;
+        
+        for (int j = 0; j < numIslasEnFila; j++) {
+            // Calcula la posición x para centrar la fila de islas
+            int x = (int) (960 + (j - (numIslasEnFila - 1) / 2.0) * (anchoIsla + espaciadoHorizontal)); // Centra la fila
+            int y = 930 - fila * (altoIsla + espaciadoVertical); // Ajusta la altura por fila
+
+            // Crea la isla y dibuja la imagen
+            this.islas[k++] = new Isla(x, y, anchoIsla, altoIsla, entorno);
+            entorno.dibujarImagen(islas[k - 1].getImagen(), x, y, 0, 6);
         }
     }
 }
+
+
+
 
 
 
