@@ -13,6 +13,42 @@ public class Juego extends InterfaceJuego {
     final ConjuntoIslas miMapa;
     final Pep pep;
 
+    final void hayColision1(){
+        //for (int k = 0; k < miMapa.islas.length; k++) {
+                // Obtener la posición y dimensiones de la isla
+                int k=8;
+                int xIsla = miMapa.islas[k].getxInicial();
+                int yIsla = miMapa.islas[k].getyInicial();
+                int anchoIsla = miMapa.islas[k].getAnchoIsla();
+                int altoIsla = miMapa.islas[k].getAltoIsla();
+
+        
+                // Obtener la posición y dimensiones de Pep
+                double xPep = pep.getXInicial();
+                double yPep = pep.getY();
+                int anchoPep = pep.getAnchoPep();
+                int altoPep = pep.getAltura();
+        
+                // Verificar si Pep está colisionando con la isla
+                boolean colisionX = xPep + anchoPep > xIsla && xPep < xIsla + anchoIsla;
+                System.out.println(colisionX);
+                boolean colisionY = yPep + altoPep > yIsla && yPep < yIsla + altoIsla;
+                System.out.println(colisionY);
+        
+                if (colisionX && colisionY) {
+                    if (yPep < yIsla) {
+                        pep.setYInicial(yIsla - pep.getAltura());  // Ajusta la posición de Pep justo encima de la isla
+                        pep.setEnElAire(false);  // Indica que Pep ya no está en el aire
+                        System.out.println("Colisión detectada, ajustando posición");
+                    }
+                }
+                //}
+            
+            
+        }
+
+    
+
     Juego() {
         this.entorno = new Entorno(this, "Proyecto para TP", 1920, 1080);
 
@@ -29,7 +65,7 @@ public class Juego extends InterfaceJuego {
         double escalaPep = 1;  
         
         //creamos a Pep
-        this.pep = new Pep(xInicialPep, yInicialPep, anguloPep, escalaPep, entorno);
+        this.pep = new Pep(800, 200, anguloPep, escalaPep, entorno);
        
         //ver cuantas islas tiene segun la cantidad de filas
         for (int i=cantidadFilas;i!=1;i-- ){
@@ -46,6 +82,10 @@ public class Juego extends InterfaceJuego {
         ConjuntoIslas mapa= new ConjuntoIslas(islaCompleto, entorno, cantidadFilas, ancho, alto);
 
         this.miMapa=mapa;
+
+
+      
+        
         
         this.entorno.iniciar();
 
@@ -54,19 +94,26 @@ public class Juego extends InterfaceJuego {
 
     public void tick() {
         
+
+        
         miMapa.dibujarFondo();
        
         miMapa.dibujarRectangulos();
 
+        double yPiesPep = pep.getY() + pep.getAltura();
+
+        hayColision1();
+
+
+
+        //REPARAR colision y gravedad
         
-    
         //boolean hayColision = miMapa.verificarColision(pep);
         //int yPlataforma = miMapa.obtenerYPlataforma(pep);
         //pep.aplicarGravedad(hayColision, yPlataforma);
     
       // Verificar si toca el suelo
     
-
         pep.dibujar();
     
         pep.mover();

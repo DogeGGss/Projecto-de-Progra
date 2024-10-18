@@ -15,6 +15,7 @@ public class Pep {
     private final double FUERZA_SALTO = 10; // Fuerza del salto
     private double velocidadVertical = 0; // Velocidad vertical de Pep
     private Image imagen1; // Imagen de Pep mirando a la derecha
+
     private Image imagen2; // Imagen de Pep mirando a la izquierda
     private boolean direccion; // True si Pep mira a la derecha, false si a la izquierda
     private Entorno entorno; // Referencia al entorno de juego
@@ -51,7 +52,7 @@ public void mover() {
         enElAire = true; // Marca que está en el aire
     }
     // Solo permite movimiento horizontal si Pep no está en el aire
-    if (!enElAire) {
+    
         if (entorno.estaPresionada('d') || entorno.estaPresionada(entorno.TECLA_DERECHA)) {
             xInicial += velocidad; // Movimiento a la derecha
             direccion = true; // Mirar a la derecha
@@ -60,7 +61,7 @@ public void mover() {
             xInicial -= velocidad; // Movimiento a la izquierda
             direccion = false; // Mirar a la izquierda
         }
-    }
+    
     // Siempre aplica gravedad
     aplicarGravedad(false, 0); // Asegúrate de gestionar correctamente la colisión
 }
@@ -121,7 +122,15 @@ public void aplicarGravedad(boolean hayColision, int yPlataforma) {
     public int getAnchoPep() {
         return (int) (imagen1.getWidth(null) * escala); // Retorna el ancho de Pep escalado
     }
+
     public double getY() {
     return yInicial; // Devuelve la posición actual en el eje Y
+    }
+
+    public double getX(){
+        return xInicial; //  posición actual de Pep en x
+    }
+    public Image getImagen1() {
+        return imagen1;
     }
 }

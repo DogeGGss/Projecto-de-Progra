@@ -28,6 +28,7 @@ public class Mapa {
     public void dibujarFondo() {
         entorno.dibujarImagen(fondo, 960, 530, 0, 12); 
     }
+    
     public boolean verificarColision(Pep pep) {
         // Coordenadas de los pies de Pep
         double yPiesPep = pep.getY() + pep.getAltura();

@@ -14,8 +14,21 @@ public class Isla {
     final int yInicial;
     final int anchoIsla;
     final int altoIsla;
+
     final Entorno entorno;
     final Image imagen;
+
+    public int getxInicial() {
+        return xInicial;
+    }
+
+    public int getAnchoIsla() {
+        return anchoIsla;
+    }
+
+    public int getAltoIsla() {
+        return altoIsla;
+    }
 
     public int getxCentro() {
         return xCentro;
