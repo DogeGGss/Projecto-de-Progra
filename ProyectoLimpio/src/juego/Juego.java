@@ -9,6 +9,8 @@ public class Juego extends InterfaceJuego {
     private Entorno entorno;
     final ConjuntoIslas miMapa;
     final Pep pep;
+   // final Gnomos minions;
+    //final Tortugas rammus;
 
     Juego() {
         this.entorno = new Entorno(this, "Proyecto para TP", 1920, 1080);
@@ -69,9 +71,13 @@ public class Juego extends InterfaceJuego {
                     if (yPep + altoPep <= yIsla + altoIsla) { // Asegura que Pep no atraviese la isla
                         pep.setYInicial(yIsla - pep.getAltura()); // Ajusta la posición de Pep justo encima de la isla
                         pep.setEnElAire(false); // Indica que Pep ya no está en el aire
-                        System.out.println("Colisión detectada, ajustando posición");
+                        pep.setColision(true);
+                    } else{
+                        pep.setColision(false);
                     }
+                
                 }
+                
             }
         }
     }

@@ -12,12 +12,15 @@ public class ConjuntoIslas {
    final int altoIsla;
    final int espaciadoHorizontal = 200;
    final int espaciadoVertical = 150;
-   Image fondo=Toolkit.getDefaultToolkit().getImage("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\Fondo.png");
-
+   Image fondo=Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Fondo.png");
+   Image casita=Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\casa.png");
 
    public Image getFondo() {
     return fondo;
 }
+   public Image getCasita(){
+    return casita;
+   }
 
 public ConjuntoIslas(Isla[] islas, Entorno entorno, int cantidadFilas, int anchoIsla, int altoIsla){
     this.islas=islas;
@@ -44,11 +47,9 @@ public ConjuntoIslas(Isla[] islas, Entorno entorno, int cantidadFilas, int ancho
             entorno.dibujarImagen(islas[k - 1].getImagen(), x, y, 0, 6);
         }
     }
+    entorno.dibujarImagen(getCasita(),islas[0].getxCentro(),islas[islas.length-1].getyInicial()-islas[islas.length-1].getAltoIsla()-25,0,0.45);
+    //dibuja la casita de los gnomos
 }
-
-
-
-
 
 
 public void dibujarFondo() {

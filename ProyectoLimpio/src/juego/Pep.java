@@ -11,14 +11,15 @@ public class Pep {
     private double yInicial; // Posición inicial de Pep en el eje Y
     private double escala;   // Escala para dibujar la imagen de Pep
     public double velocidad = 5; // Velocidad de movimiento de Pep
-    private boolean enElAire = false; // Variable para verificar si Pep está en el aire
+    public boolean enElAire = true; // Variable para verificar si Pep está en el aire
     private final double FUERZA_SALTO = 10; // Fuerza del salto
     private double velocidadVertical = 0; // Velocidad vertical de Pep
     private Image imagen1; // Imagen de Pep mirando a la derecha
-
     private Image imagen2; // Imagen de Pep mirando a la izquierda
+    public boolean yaSalto=false;
     private boolean direccion; // True si Pep mira a la derecha, false si a la izquierda
     private Entorno entorno; // Referencia al entorno de juego
+    private boolean colision=false;
 
     // Constructor de la clase Pep
     public Pep(double xInicial, double yInicial, double angulo, double escala, Entorno entorno) {
@@ -28,8 +29,8 @@ public class Pep {
         this.entorno = entorno;   // Inicializa el entorno
         // Carga las imágenes de Pep desde archivos
         try {
-            this.imagen1 = ImageIO.read(new File("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\Happy-Minion.png"));
-            this.imagen2 = ImageIO.read(new File("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\Happy-Minion-Invertida.png"));
+            this.imagen1 = ImageIO.read(new File("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Happy-Minion.png"));
+            this.imagen2 = ImageIO.read(new File("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Happy-Minion-Invertida.png"));
         } catch (IOException e) {
             e.printStackTrace(); // Maneja excepciones si las imágenes no se cargan
         }
@@ -47,62 +48,55 @@ public class Pep {
 // Método para mover a Pep
 public void mover() {
     // Verifica si se está presionando la tecla de salto
-    if ((entorno.estaPresionada('w') || entorno.estaPresionada(entorno.TECLA_ARRIBA)) && !enElAire) {
-        velocidadVertical = -FUERZA_SALTO; // Aplica la fuerza hacia arriba
-        enElAire = false; // Marca que está en el aire
-    }
-    // Solo permite movimiento horizontal si Pep no está en el aire
     
-        if (entorno.estaPresionada('d') || entorno.estaPresionada(entorno.TECLA_DERECHA)) {
+    if (entorno.sePresiono('w') && !enElAire && colision ) {
+        velocidadVertical = -FUERZA_SALTO; // Aplica la fuerza hacia arriba
+        enElAire = true; // Marca que está en el aire
+        colision=false;
+        
+    }
+        if (entorno.estaPresionada('d') ) {
             xInicial += velocidad; // Movimiento a la derecha
             direccion = true; // Mirar a la derecha
         }
-        if (entorno.estaPresionada('a') || entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
+        if (entorno.estaPresionada('a') ) {
             xInicial -= velocidad; // Movimiento a la izquierda
             direccion = false; // Mirar a la izquierda
         }
-    
     // Siempre aplica gravedad
     aplicarGravedad(false, 0); // Asegúrate de gestionar correctamente la colisión
+    if (colision){
+        enElAire=false;
+    }
 }
+
+
+
 // Método para aplicar gravedad a Pep
 public void aplicarGravedad(boolean hayColision, int yPlataforma) {
     double GRAVEDAD = 0.2; // Valor de gravedad
     double VELOCIDAD_MAXIMA_CAIDA = 5.0; // Limita la velocidad de caída
-
-    // Si hay colisión, ajusta la posición de Pep
-    if (hayColision) {
-        this.yInicial = yPlataforma - (imagen1.getHeight(null) * escala); // Ajuste
-        enElAire = false; 
-        velocidadVertical = 0; 
-    } else {
-        // Si no hay colisión, aplica la gravedad
+        // aplica la gravedad
         this.yInicial += velocidadVertical; 
         velocidadVertical += GRAVEDAD; 
-
+        enElAire = false;
+        colision=false;
+       
         // Limitar la velocidad de caída
         if (velocidadVertical > VELOCIDAD_MAXIMA_CAIDA) {
             velocidadVertical = VELOCIDAD_MAXIMA_CAIDA;
         }
-    }
+    
 }   
-    // Método para verificar colisión con plataformas
-    public boolean colisionaCon(int xPlataforma, int yPlataforma, int anchoPlataforma, int altoPlataforma) {
-        int xPep = (int) this.xInicial;
-        int yPiesPep = (int) (this.yInicial + imagen1.getHeight(null) * escala); // Solo los pies de Pep
-        int anchoPep = (int) (imagen1.getWidth(null) * escala);
-        int TOLERANCIA = 5;
-    
-        // Verifica si solo los pies de Pep colisionan con la parte superior de la plataforma
-        boolean colision = xPep < xPlataforma + anchoPlataforma &&
-                           xPep + anchoPep > xPlataforma &&
-                           yPiesPep >= yPlataforma - TOLERANCIA && // Solo si los pies están justo sobre la plataforma
-                           yPiesPep <= yPlataforma + TOLERANCIA; // Margen de tolerancia para la colisión
-    
-        return colision; // Retorna true si hay colisión, false de lo contrario
-    }
 
     // Métodos para establecer valores
+    public void setYaSalto(boolean salto){
+        this.yaSalto=salto;
+    }
+
+    public void setColision(Boolean colision){
+        this.colision=colision;
+    }
     public void setYInicial(double yInicial) {
         this.yInicial = yInicial; // Establece la posición Y inicial de Pep
     }

@@ -53,7 +53,7 @@ public class Isla {
         this.xCentro = 1920 / 2;
         this.yInicial = yInicial;
         this.entorno = entorno;
-        this.imagen = Toolkit.getDefaultToolkit().getImage("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\Plataformas.png");
+        this.imagen = Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Plataformas.png");
        
     }
    
