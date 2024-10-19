@@ -11,7 +11,6 @@ public class Gnomos {
     private double escala;   // Escala para dibujar la imagen del gnomo
     public double velocidad = 5; // Velocidad de movimiento del gnomo
     public boolean enElAire = true; // Variable para verificar que gnomo está en el aire
-    private final double FUERZA_SALTO = 10; // Fuerza del salto
     private double velocidadVertical = 0; // Velocidad vertical del gnomo
     private Image imagen1; // Imagen del gnomo mirando a la derecha
     private Image imagen2; // Imagen del gnomo mirando a la izquierda
@@ -23,8 +22,8 @@ public class Gnomos {
     this.xInicial=xInicial;
     this.yInicial=yInicial;
     this.escala=escala;
-    this.imagen1=Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\gnomo derecha.png");
-    this.imagen2=Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\gnomos.png");
+    this.imagen1=Toolkit.getDefaultToolkit().getImage("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\gnomo derecha.png");
+    this.imagen2=Toolkit.getDefaultToolkit().getImage("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\gnomos.png");
 
     //setea de forma aleatoria hacia donde mira el gnomo
     Random rand = new Random();

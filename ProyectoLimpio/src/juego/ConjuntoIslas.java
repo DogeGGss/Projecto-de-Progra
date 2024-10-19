@@ -12,8 +12,8 @@ public class ConjuntoIslas {
    final int altoIsla;
    final int espaciadoHorizontal = 200;
    final int espaciadoVertical = 150;
-   Image fondo=Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Fondo.png");
-   Image casita=Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\casa.png");
+   Image fondo=Toolkit.getDefaultToolkit().getImage("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\Fondo.png");
+   Image casita=Toolkit.getDefaultToolkit().getImage("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\casa.png");
 
    public Image getFondo() {
     return fondo;

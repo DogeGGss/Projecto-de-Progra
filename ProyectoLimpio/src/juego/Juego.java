@@ -9,7 +9,8 @@ public class Juego extends InterfaceJuego {
     private Entorno entorno;
     final ConjuntoIslas miMapa;
     final Pep pep;
-   // final Gnomos minions;
+    
+   
     //final Tortugas rammus;
 
     Juego() {
