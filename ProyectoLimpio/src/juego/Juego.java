@@ -9,7 +9,7 @@ public class Juego extends InterfaceJuego {
     private Entorno entorno;
     final ConjuntoIslas miMapa;
     final Pep pep;
-    
+    final Conjuntognomos gnomos;
    
     //final Tortugas rammus;
 
@@ -46,6 +46,8 @@ public class Juego extends InterfaceJuego {
 
         // Creamos el conjunto de islas
         this.miMapa = new ConjuntoIslas(islaCompleto, entorno, cantidadFilas, ancho, alto);
+        //miMapa.islas[0].getxCentro(),miMapa.islas[this.miMapa.islas.length-1].getyInicial()-this.miMapa.islas.length-1+this.miMapa.islas[0].getAltoIsla()-25
+        this.gnomos= new Conjuntognomos(entorno);
 
         this.entorno.iniciar();
     }
@@ -88,8 +90,8 @@ public class Juego extends InterfaceJuego {
         miMapa.dibujarRectangulos();
 
         verificarColisiones(); // Cambiado a verificarColisiones()
-
         pep.dibujar();
+        gnomos.dibujarGnomos(300, 280);
         pep.mover();
     }
 

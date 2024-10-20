@@ -29,8 +29,8 @@ public class Pep {
         this.entorno = entorno;   // Inicializa el entorno
         // Carga las imágenes de Pep desde archivos
         try {
-            this.imagen1 = ImageIO.read(new File("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\Happy-Minion.png"));
-            this.imagen2 = ImageIO.read(new File("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\Happy-Minion-Invertida.png"));
+            this.imagen1 = ImageIO.read(new File("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Happy-Minion.png"));
+            this.imagen2 = ImageIO.read(new File("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Happy-Minion-Invertida.png"));
         } catch (IOException e) {
             e.printStackTrace(); // Maneja excepciones si las imágenes no se cargan
         }
