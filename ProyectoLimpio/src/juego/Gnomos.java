@@ -9,7 +9,7 @@ public class Gnomos {
     private double xInicial; // Posición inicial del gnomo en el eje X
     private double yInicial; // Posición inicial del gnomo en el eje Y
     private double escala;   // Escala para dibujar la imagen del gnomo
-    public double velocidad = 3; // Velocidad de movimiento del gnomo
+    public double velocidad = 1; // Velocidad de movimiento del gnomo
     private double velocidadVertical = 0; // Velocidad vertical del gnomo
     private Image imagen1; // Imagen del gnomo mirando a la derecha
     private Image imagen2; // Imagen del gnomo mirando a la izquierda
@@ -17,6 +17,10 @@ public class Gnomos {
     private boolean direccion; // True el gnomo mira a la derecha, false si a la izquierda
     private Entorno entorno; // Referencia al entorno de juego
     private boolean colision=false;//true si esta sobre una plataforma, false sino
+    public boolean flag;
+    public boolean enElAire;
+    public int tiempoInicial;
+
 
     public Gnomos(double xInicial,double yInicial,double escala,Entorno entorno){
     this.xInicial=xInicial;
@@ -28,16 +32,10 @@ public class Gnomos {
 
     //setea de forma aleatoria hacia donde mira el gnomo
     Random rand = new Random();
-    int direccion = rand.nextInt(2);
-
-    if(direccion==1){
-        this.direccion=true;
-    } else {
-        this.direccion=false;
+    boolean direccionboolean = rand.nextBoolean();
+    this.direccion=direccionboolean;
     }
-        }
-
-
+    
     public void dibujarEseGnomo(double x,double y){
         if(direccion){
             this.imagenInicial=imagen1;
@@ -56,9 +54,10 @@ public class Gnomos {
             xInicial -= velocidad; // Movimiento a la izquierda
         }
         // Solo cambia de dirección si hay una colisión
-        if (colision) {
-            direccion = !direccion; // Cambia la dirección
-            colision = false; // Resetear la colisión después de cambiar de dirección
+        if (colision&&flag) {
+            Random rand = new Random();
+             boolean n = rand.nextBoolean();
+            direccion = n; // Cambia la dirección
         }
         aplicarGravedadGnomos(); // Aplicar gravedad en cada tick
 }

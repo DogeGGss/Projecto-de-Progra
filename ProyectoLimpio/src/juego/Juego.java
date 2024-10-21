@@ -10,8 +10,8 @@ public class Juego extends InterfaceJuego {
     final ConjuntoIslas miMapa;
     final Pep pep;
     final Conjuntognomos gnomos;
-   
-    //final Tortugas rammus;
+   final Conjuntotortugas tortugas;
+    
 
     Juego() {
         this.entorno = new Entorno(this, "Proyecto para TP", 1920, 1080);
@@ -49,12 +49,52 @@ public class Juego extends InterfaceJuego {
         this.miMapa = new ConjuntoIslas(islaCompleto, entorno, cantidadFilas, ancho, alto);
         //miMapa.islas[0].getxCentro(),miMapa.islas[this.miMapa.islas.length-1].getyInicial()-this.miMapa.islas.length-1+this.miMapa.islas[0].getAltoIsla()-25
         this.gnomos= new Conjuntognomos(entorno);
-
+        this.tortugas=new Conjuntotortugas(entorno);
         this.entorno.iniciar();
     }
 
-    private void verificarColisiones() {
-        int pos=0;
+
+    private void verificarColisionesTortugas(){
+
+                    for (Isla isla : miMapa.islas) {
+                        if (isla != null) {
+                            for (int i = 0; i < 4; i++) {
+                            // Obtener la posición y dimensiones de la isla
+                            int xIsla = isla.getxInicial();
+                            int yIsla = isla.getyInicial();
+                            int anchoIsla = isla.getAnchoIsla();
+                            int altoIsla = isla.getAltoIsla();
+                
+                            // Obtener la posición y dimensiones de Pep
+                            double xTor = tortugas.conjunTortugas[i].getxInicial();
+                            double yTor = tortugas.conjunTortugas[i].getyInicial();
+                            int anchoTor = tortugas.conjunTortugas[i].getAncho();
+                            int altoTor = tortugas.conjunTortugas[i].getAltura();
+                
+                            // Verificar colisiones solo con los laterales
+                            boolean colisionX = xTor + anchoTor > xIsla && xTor < xIsla + anchoIsla;
+                            boolean colisionY = yTor +  altoTor > yIsla && yTor < yIsla + altoIsla;
+                
+                            if (colisionX && colisionY) {
+                                // Comprobar si la colisión fue con el lateral izquierdo o derecho
+                                if (xTor + anchoTor / 2 < xIsla + anchoIsla / 2) {
+                                    // Colisión con el lateral izquierdo
+                                    tortugas.conjunTortugas[i].setyInicial(yIsla - tortugas.conjunTortugas[i].getAltura());
+                               // tortugas.conjunTortugas[i].setColisionLateral(true);
+                            } else {
+                               // tortugas.conjunTortugas[i].setColisionLateral(false);
+                            }
+                        }
+                            }
+                    
+                        }
+                }
+            }
+                
+            
+
+     private void verificarColisiones() {
+        
         for (Isla isla : miMapa.islas) {
             if (isla != null) {
                 // Obtener la posición y dimensiones de la isla
@@ -69,18 +109,30 @@ public class Juego extends InterfaceJuego {
                 int anchoPep = pep.getAnchoPep();
                 int altoPep = pep.getAltura();
                 
-                for(int i=0;i<4;i++){
-                    boolean colisionXgnomos = this.gnomos.Todoslosgnomos[i].getxInicial() + this.gnomos.Todoslosgnomos[i].getAncho() > xIsla && this.gnomos.Todoslosgnomos[i].getxInicial() < xIsla + anchoIsla;
-                    boolean colisionYgnomos = this.gnomos.Todoslosgnomos[i].getyInicial() + this.gnomos.Todoslosgnomos[i].getAltura() > yIsla && this.gnomos.Todoslosgnomos[i].getyInicial() < yIsla + altoIsla;
+                for (int i = 0; i < 4; i++) {
+                    boolean colisionXgnomos = this.gnomos.Todoslosgnomos[i].getxInicial() + this.gnomos.Todoslosgnomos[i].getAncho() > xIsla 
+                        && this.gnomos.Todoslosgnomos[i].getxInicial() < xIsla + anchoIsla;
+                    boolean colisionYgnomos = this.gnomos.Todoslosgnomos[i].getyInicial() + this.gnomos.Todoslosgnomos[i].getAltura() > yIsla 
+                        && this.gnomos.Todoslosgnomos[i].getyInicial() < yIsla + altoIsla;
+
                     if (colisionXgnomos && colisionYgnomos) {
                         this.gnomos.Todoslosgnomos[i].setyInicial(yIsla - this.gnomos.Todoslosgnomos[i].getAltura()); // Ajusta la posición del gnomo justo encima de la isla
-                        
-                        if(i!=miMapa.islas.length-1){
-                            this.gnomos.Todoslosgnomos[i].setColision(true);
-                        }
-                        
+                        this.gnomos.Todoslosgnomos[i].setColision(true);  // Todos los gnomos tienen colisión
+                    } else {
+                       
                     }
-                    pos++;
+                }
+                for (int i = 0; i < 4; i++) {
+                   
+                    //cronometro para cambiar de direccion despues de una cantidad especifica de ticks
+                    if(this.gnomos.Todoslosgnomos[i].tiempoInicial==40){
+                        this.gnomos.Todoslosgnomos[i].flag=true;
+                        this.gnomos.Todoslosgnomos[i].tiempoInicial=0; 
+                     } else {
+                        this.gnomos.Todoslosgnomos[i].tiempoInicial++;
+                        this.gnomos.Todoslosgnomos[i].flag=false;
+                     }
+                   
                 }
 
                 // Verificar si Pep está colisionando con la isla
@@ -91,12 +143,18 @@ public class Juego extends InterfaceJuego {
                         pep.setYInicial(yIsla - pep.getAltura()); // Ajusta la posición de Pep justo encima de la isla
                         pep.setEnElAire(false); // Indica que Pep ya no está en el aire
                         pep.setColision(true);
+                        
+                        
                     } else{
                         pep.setColision(false);
+                        
+                       
                     }
                 }
             }
         }
+            
+        
     }
 
     public void tick() {
@@ -104,12 +162,19 @@ public class Juego extends InterfaceJuego {
         miMapa.dibujarRectangulos();
         pep.dibujar();
         gnomos.dibujarGnomos();
+        tortugas.dibujarTortugas();
         pep.mover();
         gnomos.Todoslosgnomos[0].moverGnomo();
         gnomos.Todoslosgnomos[1].moverGnomo();
         gnomos.Todoslosgnomos[2].moverGnomo();
         gnomos.Todoslosgnomos[3].moverGnomo();
+
+       tortugas.conjunTortugas[0].moverTortuga();
+       tortugas.conjunTortugas[1].moverTortuga();
+       tortugas.conjunTortugas[2].moverTortuga();
+       tortugas.conjunTortugas[3].moverTortuga();
         verificarColisiones(); 
+        verificarColisionesTortugas();
 
 
     }
