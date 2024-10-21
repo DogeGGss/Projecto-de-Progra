@@ -44,6 +44,7 @@ public class Pep {
         } else {
             entorno.dibujarImagen(imagen2, xInicial, yInicial, 0, escala); // Dibuja imagen mirando a la izquierda
         }
+        System.out.println("dibujando PEP");
     }
 // Método para mover a Pep
 public void mover() {
@@ -64,7 +65,7 @@ public void mover() {
             direccion = false; // Mirar a la izquierda
         }
     // Siempre aplica gravedad
-    aplicarGravedad(false, 0); // Asegúrate de gestionar correctamente la colisión
+    aplicarGravedad(); // Asegúrate de gestionar correctamente la colisión
     if (colision){
         enElAire=false;
     }
@@ -73,7 +74,7 @@ public void mover() {
 
 
 // Método para aplicar gravedad a Pep
-public void aplicarGravedad(boolean hayColision, int yPlataforma) {
+public void aplicarGravedad() {
     double GRAVEDAD = 0.2; // Valor de gravedad
     double VELOCIDAD_MAXIMA_CAIDA = 5.0; // Limita la velocidad de caída
         // aplica la gravedad
@@ -81,7 +82,6 @@ public void aplicarGravedad(boolean hayColision, int yPlataforma) {
         velocidadVertical += GRAVEDAD; 
         enElAire = false;
         colision=false;
-       
         // Limitar la velocidad de caída
         if (velocidadVertical > VELOCIDAD_MAXIMA_CAIDA) {
             velocidadVertical = VELOCIDAD_MAXIMA_CAIDA;

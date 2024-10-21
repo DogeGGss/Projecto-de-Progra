@@ -15,21 +15,19 @@ public class Conjuntognomos {
        
     }
 
-
-    public void dibujarGnomos(double x, double y){
-        while(contadorGnomos<=4){
-            for(int i=0;i<4;i++){
-            if(this.Todoslosgnomos[i]==null){
-                    this.Todoslosgnomos[i]= new Gnomos(x,y,0.4,entorno);   
-                    this.Todoslosgnomos[i].dibujarEseGnomo(x,y);
+    public void dibujarGnomos() {
+        for (int i = 0; i < Todoslosgnomos.length; i++) {
+            if (this.Todoslosgnomos[i] == null) {
+                double x = 1920/2; // Cambia la posición x de cada gnomo
+                double y = 100;           // Puedes cambiar y según lo que necesites
+                this.Todoslosgnomos[i] = new Gnomos(x, y, 0.4, entorno);
             }
-            contadorGnomos++;
-        }    
-    }
-    }
-
-
-    //[2,4] 
+            this.Todoslosgnomos[i].dibujarEseGnomo(Todoslosgnomos[i].getxInicial(), Todoslosgnomos[i].getyInicial());
+        }
+    } 
 
 }
+
+
+
 

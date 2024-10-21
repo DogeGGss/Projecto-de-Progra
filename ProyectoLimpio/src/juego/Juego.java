@@ -27,6 +27,7 @@ public class Juego extends InterfaceJuego {
         double yInicialPep = 280; // Ajusta esta posición según sea necesario
         double anguloPep = 0;      
         double escalaPep = 1;  
+       
 
         // Creamos a Pep
         this.pep = new Pep(xInicialPep, yInicialPep, anguloPep, escalaPep, entorno);
@@ -53,6 +54,7 @@ public class Juego extends InterfaceJuego {
     }
 
     private void verificarColisiones() {
+        int pos=0;
         for (Isla isla : miMapa.islas) {
             if (isla != null) {
                 // Obtener la posición y dimensiones de la isla
@@ -66,6 +68,20 @@ public class Juego extends InterfaceJuego {
                 double yPep = pep.getY();
                 int anchoPep = pep.getAnchoPep();
                 int altoPep = pep.getAltura();
+                
+                for(int i=0;i<4;i++){
+                    boolean colisionXgnomos = this.gnomos.Todoslosgnomos[i].getxInicial() + this.gnomos.Todoslosgnomos[i].getAncho() > xIsla && this.gnomos.Todoslosgnomos[i].getxInicial() < xIsla + anchoIsla;
+                    boolean colisionYgnomos = this.gnomos.Todoslosgnomos[i].getyInicial() + this.gnomos.Todoslosgnomos[i].getAltura() > yIsla && this.gnomos.Todoslosgnomos[i].getyInicial() < yIsla + altoIsla;
+                    if (colisionXgnomos && colisionYgnomos) {
+                        this.gnomos.Todoslosgnomos[i].setyInicial(yIsla - this.gnomos.Todoslosgnomos[i].getAltura()-50); // Ajusta la posición del gnomo justo encima de la isla
+                        this.gnomos.Todoslosgnomos[i].setEnElAire(false); 
+                        if(i!=miMapa.islas.length-1){
+                            this.gnomos.Todoslosgnomos[i].setColision(true);
+                        }
+                        
+                    }
+                    pos++;
+                }
 
                 // Verificar si Pep está colisionando con la isla
                 boolean colisionX = xPep + anchoPep > xIsla && xPep < xIsla + anchoIsla;
@@ -78,9 +94,7 @@ public class Juego extends InterfaceJuego {
                     } else{
                         pep.setColision(false);
                     }
-                
                 }
-                
             }
         }
     }
@@ -88,11 +102,16 @@ public class Juego extends InterfaceJuego {
     public void tick() {
         miMapa.dibujarFondo();
         miMapa.dibujarRectangulos();
-
-        verificarColisiones(); // Cambiado a verificarColisiones()
         pep.dibujar();
-        gnomos.dibujarGnomos(300, 280);
+        gnomos.dibujarGnomos();
         pep.mover();
+        gnomos.Todoslosgnomos[0].moverGnomo();
+        gnomos.Todoslosgnomos[1].moverGnomo();
+        gnomos.Todoslosgnomos[2].moverGnomo();
+        gnomos.Todoslosgnomos[3].moverGnomo();
+        verificarColisiones(); 
+
+
     }
 
     public static void main(String[] args) {
