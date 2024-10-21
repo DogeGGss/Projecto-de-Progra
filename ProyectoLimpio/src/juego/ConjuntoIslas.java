@@ -47,8 +47,9 @@ public ConjuntoIslas(Isla[] islas, Entorno entorno, int cantidadFilas, int ancho
             entorno.dibujarImagen(islas[k - 1].getImagen(), x, y, 0, 6);
         }
     }
-    entorno.dibujarImagen(getCasita(),islas[0].getxCentro(),islas[islas.length-1].getyInicial()-islas[islas.length-1].getAltoIsla()-25,0,0.45);
     //dibuja la casita de los gnomos
+    entorno.dibujarImagen(getCasita(),islas[0].getxCentro(),islas[islas.length-1].getyInicial()-islas[islas.length-1].getAltoIsla()-25,0,0.45);
+    
 }
 
 

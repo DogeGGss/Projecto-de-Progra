@@ -44,7 +44,7 @@ public class Pep {
         } else {
             entorno.dibujarImagen(imagen2, xInicial, yInicial, 0, escala); // Dibuja imagen mirando a la izquierda
         }
-        System.out.println("dibujando PEP");
+       
     }
 // Método para mover a Pep
 public void mover() {
@@ -89,7 +89,7 @@ public void aplicarGravedad() {
     
 }   
 
-    // Métodos para establecer valores
+    //getters y setters 
     public void setYaSalto(boolean salto){
         this.yaSalto=salto;
     }

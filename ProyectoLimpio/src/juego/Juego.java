@@ -73,8 +73,8 @@ public class Juego extends InterfaceJuego {
                     boolean colisionXgnomos = this.gnomos.Todoslosgnomos[i].getxInicial() + this.gnomos.Todoslosgnomos[i].getAncho() > xIsla && this.gnomos.Todoslosgnomos[i].getxInicial() < xIsla + anchoIsla;
                     boolean colisionYgnomos = this.gnomos.Todoslosgnomos[i].getyInicial() + this.gnomos.Todoslosgnomos[i].getAltura() > yIsla && this.gnomos.Todoslosgnomos[i].getyInicial() < yIsla + altoIsla;
                     if (colisionXgnomos && colisionYgnomos) {
-                        this.gnomos.Todoslosgnomos[i].setyInicial(yIsla - this.gnomos.Todoslosgnomos[i].getAltura()-50); // Ajusta la posición del gnomo justo encima de la isla
-                        this.gnomos.Todoslosgnomos[i].setEnElAire(false); 
+                        this.gnomos.Todoslosgnomos[i].setyInicial(yIsla - this.gnomos.Todoslosgnomos[i].getAltura()); // Ajusta la posición del gnomo justo encima de la isla
+                        
                         if(i!=miMapa.islas.length-1){
                             this.gnomos.Todoslosgnomos[i].setColision(true);
                         }

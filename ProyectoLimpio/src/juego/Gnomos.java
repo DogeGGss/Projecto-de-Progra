@@ -10,7 +10,6 @@ public class Gnomos {
     private double yInicial; // Posición inicial del gnomo en el eje Y
     private double escala;   // Escala para dibujar la imagen del gnomo
     public double velocidad = 3; // Velocidad de movimiento del gnomo
-    public boolean enElAire = true; // Variable para verificar que gnomo está en el aire
     private double velocidadVertical = 0; // Velocidad vertical del gnomo
     private Image imagen1; // Imagen del gnomo mirando a la derecha
     private Image imagen2; // Imagen del gnomo mirando a la izquierda
@@ -61,7 +60,6 @@ public class Gnomos {
             direccion = !direccion; // Cambia la dirección
             colision = false; // Resetear la colisión después de cambiar de dirección
         }
-
         aplicarGravedadGnomos(); // Aplicar gravedad en cada tick
 }
         
@@ -72,7 +70,6 @@ public class Gnomos {
                 // aplica la gravedad
                 this.yInicial += velocidadVertical; 
                 velocidadVertical += GRAVEDAD; 
-                enElAire = false;
                 
                 // Limitar la velocidad de caída
                 if (velocidadVertical > VELOCIDAD_MAXIMA_CAIDA) {
@@ -81,9 +78,7 @@ public class Gnomos {
             
         }   
 
-
-
-
+         //getters y setters 
     public double getxInicial() {
         return xInicial;
     }
@@ -115,15 +110,7 @@ public class Gnomos {
     public void setVelocidad(double velocidad) {
         this.velocidad = velocidad;
     }
-
-    public boolean isEnElAire() {
-        return enElAire;
-    }
-
-    public void setEnElAire(boolean enElAire) {
-        this.enElAire = enElAire;
-    }
-
+    
     public double getVelocidadVertical() {
         return velocidadVertical;
     }
