@@ -44,7 +44,7 @@ public ConjuntoIslas(Isla[] islas, Entorno entorno, int cantidadFilas, int ancho
 
             // Crea la isla y dibuja la imagen
             this.islas[k++] = new Isla(x, y, anchoIsla, altoIsla, entorno);
-            entorno.dibujarImagen(islas[k - 1].getImagen(), x, y, 0, 6);
+            entorno.dibujarImagen(islas[k-1].getImagen(), x, y, 0, 6);
         }
     }
     //dibuja la casita de los gnomos

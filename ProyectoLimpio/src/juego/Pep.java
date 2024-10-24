@@ -20,7 +20,7 @@ public class Pep {
     private boolean direccion; // True si Pep mira a la derecha, false si a la izquierda
     private Entorno entorno; // Referencia al entorno de juego
     private boolean colision=false;
-    public double GRAVEDAD;
+    public double GRAVEDAD=0.2;
     public int contadorDeTiempo;
 
     public double getGRAVEDAD() {

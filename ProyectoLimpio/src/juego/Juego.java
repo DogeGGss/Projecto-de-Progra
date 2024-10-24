@@ -89,26 +89,63 @@ public class Juego extends InterfaceJuego {
                     
                         }
                 }
+    }
+
+    private boolean ColisionaPep() {
+        double xPep = pep.getXInicial();
+        double yPep = pep.getY();
+        int anchoPep = pep.getAnchoPep();
+        int altoPep = pep.getAltura();
+        int Margen = 3;
+    
+        for (int i = 0; i < miMapa.islas.length; i++) {
+            int xIsla = miMapa.islas[i].getxInicial();
+            int yIsla = miMapa.islas[i].getyInicial();
+            int anchoIsla = miMapa.islas[i].getAnchoIsla();
+            int altoIsla = miMapa.islas[i].getAltoIsla();
+            
+            boolean colisionX = (xPep + anchoPep / 2 + Margen > xIsla - anchoIsla / 2) && (xPep - anchoPep / 2 - Margen < xIsla + anchoIsla / 2);
+            boolean colisionY = (yPep + altoPep / 2 + Margen > yIsla - altoIsla / 2) && (yPep - altoPep / 2 - Margen < yIsla + altoIsla / 2);
+    
+            // Depuración
+            System.out.println("Pep: (" + xPep + ", " + yPep + "), Isla: (" + xIsla + ", " + yIsla + ")");
+            System.out.println("Colision X: " + colisionX + ", Colision Y: " + colisionY);
+    
+            if (colisionX && colisionY) {
+                return true;
             }
+        }
+        return false;
+    }
+    
+    
+
+    private void VerificarColision(){
+        if (ColisionaPep()){
+            pep.GRAVEDAD=0.0;
+        } else {
+            pep.GRAVEDAD=2;
+        }
+        
+    }
                 
             
 
      private void verificarColisiones() {
+        // Obtener la posición y dimensiones de Pep
+        double xPep = pep.getXInicial();
+        double yPep = pep.getY();
+        int anchoPep = pep.getAnchoPep();
+        int altoPep = pep.getAltura();
+        int Margen=15;
         
-        for(int i=0;i<miMapa.islas.length;i++){
+        for(int i=0;i<miMapa.islas.length-1;i++){
                 // Obtener la posición y dimensiones de la isla
                 int xIsla = miMapa.islas[i].getxInicial();
                 int yIsla = miMapa.islas[i].getyInicial();
                 int anchoIsla = miMapa.islas[i].getAnchoIsla();
                 int altoIsla = miMapa.islas[i].getAltoIsla();
 
-                int margen=3;
-
-                // Obtener la posición y dimensiones de Pep
-                double xPep = pep.getXInicial();
-                double yPep = pep.getY();
-                int anchoPep = pep.getAnchoPep();
-                int altoPep = pep.getAltura();
                 
                 for (int j = 0; i < 4; i++) {
                     boolean colisionXgnomos = this.gnomos.Todoslosgnomos[j].getxInicial() + this.gnomos.Todoslosgnomos[j].getAncho() > xIsla 
@@ -137,16 +174,16 @@ public class Juego extends InterfaceJuego {
                 }
 
                 // Verificar si Pep está colisionando con la isla
-                boolean colisionX = xPep + anchoPep/2 > xIsla-anchoIsla/2 && xPep-anchoPep/2 < xIsla + anchoIsla/2;
-                double valoresDeY = Math.abs(yPep + altoPep/2 - yIsla - altoIsla/2);
-                boolean colisionY=yPep + altoPep/2 == yIsla - altoIsla/2;
+                boolean colisionX = (xPep + anchoPep/2 > xIsla-anchoIsla/2 )&& (xPep-anchoPep/2 < xIsla + anchoIsla/2);
+                double DistanciaEnYdeLaIsla= Math.abs(yPep + altoPep/2 - yIsla - altoIsla/2);
+                boolean colisionY=DistanciaEnYdeLaIsla<Margen;
                 if (colisionX && colisionY) {
                         pep.GRAVEDAD=0.0;
                         break;
                        // pep.setEnElAire(false); // Indica que Pep ya no está en el aire
                         //pep.setColision(true); 
                     } else{
-                        pep.GRAVEDAD=1;
+                        pep.GRAVEDAD=2;
                         //pep.setEnElAire(true);
                         //pep.setColision(false);
                     }
@@ -158,6 +195,7 @@ public class Juego extends InterfaceJuego {
     
 
     public void tick() {
+
         miMapa.dibujarFondo();
         miMapa.dibujarRectangulos();
         pep.dibujar();
@@ -173,8 +211,13 @@ public class Juego extends InterfaceJuego {
        tortugas.conjunTortugas[1].moverTortuga();
        tortugas.conjunTortugas[2].moverTortuga();
        tortugas.conjunTortugas[3].moverTortuga();
-        verificarColisiones(); 
+
+
+        //verificarColisiones(); 
+
         verificarColisionesTortugas();
+
+        VerificarColision();
 
 
     }
