@@ -26,7 +26,7 @@ public class Juego extends InterfaceJuego {
         double xInicialPep = 300;
         double yInicialPep = 280; // Ajusta esta posición según sea necesario
         double anguloPep = 0;      
-        double escalaPep = 1;  
+        double escalaPep = 0.3;  
        
 
         // Creamos a Pep
@@ -95,13 +95,14 @@ public class Juego extends InterfaceJuego {
 
      private void verificarColisiones() {
         
-        for (Isla isla : miMapa.islas) {
-            if (isla != null) {
+        for(int i=0;i<miMapa.islas.length;i++){
                 // Obtener la posición y dimensiones de la isla
-                int xIsla = isla.getxInicial();
-                int yIsla = isla.getyInicial();
-                int anchoIsla = isla.getAnchoIsla();
-                int altoIsla = isla.getAltoIsla();
+                int xIsla = miMapa.islas[i].getxInicial();
+                int yIsla = miMapa.islas[i].getyInicial();
+                int anchoIsla = miMapa.islas[i].getAnchoIsla();
+                int altoIsla = miMapa.islas[i].getAltoIsla();
+
+                int margen=3;
 
                 // Obtener la posición y dimensiones de Pep
                 double xPep = pep.getXInicial();
@@ -109,53 +110,52 @@ public class Juego extends InterfaceJuego {
                 int anchoPep = pep.getAnchoPep();
                 int altoPep = pep.getAltura();
                 
-                for (int i = 0; i < 4; i++) {
-                    boolean colisionXgnomos = this.gnomos.Todoslosgnomos[i].getxInicial() + this.gnomos.Todoslosgnomos[i].getAncho() > xIsla 
-                        && this.gnomos.Todoslosgnomos[i].getxInicial() < xIsla + anchoIsla;
-                    boolean colisionYgnomos = this.gnomos.Todoslosgnomos[i].getyInicial() + this.gnomos.Todoslosgnomos[i].getAltura() > yIsla 
-                        && this.gnomos.Todoslosgnomos[i].getyInicial() < yIsla + altoIsla;
+                for (int j = 0; i < 4; i++) {
+                    boolean colisionXgnomos = this.gnomos.Todoslosgnomos[j].getxInicial() + this.gnomos.Todoslosgnomos[j].getAncho() > xIsla 
+                        && this.gnomos.Todoslosgnomos[j].getxInicial() < xIsla + anchoIsla;
+                    boolean colisionYgnomos = this.gnomos.Todoslosgnomos[j].getyInicial() + this.gnomos.Todoslosgnomos[j].getAltura() > yIsla 
+                        && this.gnomos.Todoslosgnomos[j].getyInicial() < yIsla + altoIsla;
 
                     if (colisionXgnomos && colisionYgnomos) {
-                        this.gnomos.Todoslosgnomos[i].setyInicial(yIsla - this.gnomos.Todoslosgnomos[i].getAltura()); // Ajusta la posición del gnomo justo encima de la isla
-                        this.gnomos.Todoslosgnomos[i].setColision(true);  // Todos los gnomos tienen colisión
+                        this.gnomos.Todoslosgnomos[j].setyInicial(yIsla - this.gnomos.Todoslosgnomos[j].getAltura()); // Ajusta la posición del gnomo justo encima de la isla
+                        this.gnomos.Todoslosgnomos[j].setColision(true);  // Todos los gnomos tienen colisión
                     } else {
                        
                     }
                 }
-                for (int i = 0; i < 4; i++) {
+                for (int k = 0; i < 4; i++) {
                    
                     //cronometro para cambiar de direccion despues de una cantidad especifica de ticks
-                    if(this.gnomos.Todoslosgnomos[i].tiempoInicial==40){
-                        this.gnomos.Todoslosgnomos[i].flag=true;
-                        this.gnomos.Todoslosgnomos[i].tiempoInicial=0; 
+                    if(this.gnomos.Todoslosgnomos[k].tiempoInicial==40){
+                        this.gnomos.Todoslosgnomos[k].flag=true;
+                        this.gnomos.Todoslosgnomos[k].tiempoInicial=0; 
                      } else {
-                        this.gnomos.Todoslosgnomos[i].tiempoInicial++;
-                        this.gnomos.Todoslosgnomos[i].flag=false;
+                        this.gnomos.Todoslosgnomos[k].tiempoInicial++;
+                        this.gnomos.Todoslosgnomos[k].flag=false;
                      }
                    
                 }
 
                 // Verificar si Pep está colisionando con la isla
-                boolean colisionX = xPep + anchoPep > xIsla && xPep < xIsla + anchoIsla;
-                boolean colisionY = yPep + altoPep > yIsla && yPep < yIsla + altoIsla;
+                boolean colisionX = xPep + anchoPep/2 > xIsla-anchoIsla/2 && xPep-anchoPep/2 < xIsla + anchoIsla/2;
+                double valoresDeY = Math.abs(yPep + altoPep/2 - yIsla - altoIsla/2);
+                boolean colisionY=yPep + altoPep/2 == yIsla - altoIsla/2;
                 if (colisionX && colisionY) {
-                    if (yPep + altoPep <= yIsla + altoIsla) { // Asegura que Pep no atraviese la isla
-                        pep.setYInicial(yIsla - pep.getAltura()); // Ajusta la posición de Pep justo encima de la isla
-                        pep.setEnElAire(false); // Indica que Pep ya no está en el aire
-                        pep.setColision(true);
-                        
-                        
+                        pep.GRAVEDAD=0.0;
+                        break;
+                       // pep.setEnElAire(false); // Indica que Pep ya no está en el aire
+                        //pep.setColision(true); 
                     } else{
-                        pep.setColision(false);
-                        
-                       
+                        pep.GRAVEDAD=1;
+                        //pep.setEnElAire(true);
+                        //pep.setColision(false);
                     }
-                }
+                
             }
         }
             
         
-    }
+    
 
     public void tick() {
         miMapa.dibujarFondo();

@@ -20,7 +20,15 @@ public class Pep {
     private boolean direccion; // True si Pep mira a la derecha, false si a la izquierda
     private Entorno entorno; // Referencia al entorno de juego
     private boolean colision=false;
+    public double GRAVEDAD;
+    public int contadorDeTiempo;
 
+    public double getGRAVEDAD() {
+        return GRAVEDAD;
+    }
+    public void setGRAVEDAD(double gRAVEDAD) {
+        GRAVEDAD = gRAVEDAD;
+    }
     // Constructor de la clase Pep
     public Pep(double xInicial, double yInicial, double angulo, double escala, Entorno entorno) {
         this.xInicial = xInicial; // Inicializa la posición X
@@ -29,8 +37,8 @@ public class Pep {
         this.entorno = entorno;   // Inicializa el entorno
         // Carga las imágenes de Pep desde archivos
         try {
-            this.imagen1 = ImageIO.read(new File("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Happy-Minion.png"));
-            this.imagen2 = ImageIO.read(new File("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Happy-Minion-Invertida.png"));
+            this.imagen1 = ImageIO.read(new File("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Nasus derecha.png"));
+            this.imagen2 = ImageIO.read(new File("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Nasus izquierda.png"));
         } catch (IOException e) {
             e.printStackTrace(); // Maneja excepciones si las imágenes no se cargan
         }
@@ -75,18 +83,9 @@ public void mover() {
 
 // Método para aplicar gravedad a Pep
 public void aplicarGravedad() {
-    double GRAVEDAD = 0.2; // Valor de gravedad
-    double VELOCIDAD_MAXIMA_CAIDA = 5.0; // Limita la velocidad de caída
         // aplica la gravedad
-        this.yInicial += velocidadVertical; 
-        velocidadVertical += GRAVEDAD; 
-        enElAire = false;
-        colision=false;
-        // Limitar la velocidad de caída
-        if (velocidadVertical > VELOCIDAD_MAXIMA_CAIDA) {
-            velocidadVertical = VELOCIDAD_MAXIMA_CAIDA;
-        }
-    
+        this.yInicial += this.GRAVEDAD; 
+ 
 }   
 
     //getters y setters 
