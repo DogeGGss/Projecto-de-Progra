@@ -27,8 +27,8 @@ public class Gnomos {
     this.yInicial=yInicial;
     this.escala=escala;
     this.entorno=entorno;
-    this.imagen1=Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\gnomo derecha.png");
-    this.imagen2=Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\gnomos.png");
+    this.imagen1=Toolkit.getDefaultToolkit().getImage("gnomo derecha.png");
+    this.imagen2=Toolkit.getDefaultToolkit().getImage("gnomos.png");
 
     //setea de forma aleatoria hacia donde mira el gnomo
     Random rand = new Random();

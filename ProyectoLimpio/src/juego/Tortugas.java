@@ -27,8 +27,8 @@ public class Tortugas {
         this.yInicial=yInicial;
         this.escala=escala;
         this.entorno=entorno;
-        this.imagen1=Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\rammus derecha.png");
-        this.imagen2=Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\rammus izquierda.png");
+        this.imagen1=Toolkit.getDefaultToolkit().getImage("rammus derecha.png");
+        this.imagen2=Toolkit.getDefaultToolkit().getImage("rammus izquierda.png");
         
         //setea de forma aleatoria hacia donde mira la tortuga
         Random rand = new Random();

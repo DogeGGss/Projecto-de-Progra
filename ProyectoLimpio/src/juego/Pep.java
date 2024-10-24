@@ -37,8 +37,8 @@ public class Pep {
         this.entorno = entorno;   // Inicializa el entorno
         // Carga las imágenes de Pep desde archivos
         try {
-            this.imagen1 = ImageIO.read(new File("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Nasus derecha.png"));
-            this.imagen2 = ImageIO.read(new File("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\Nasus izquierda.png"));
+            this.imagen1 = ImageIO.read(new File("Nasus derecha.png"));
+            this.imagen2 = ImageIO.read(new File("Nasus izquierda.png"));
         } catch (IOException e) {
             e.printStackTrace(); // Maneja excepciones si las imágenes no se cargan
         }
