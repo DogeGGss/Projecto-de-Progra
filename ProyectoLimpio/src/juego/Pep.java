@@ -59,6 +59,7 @@ public void mover() {
     // Verifica si se está presionando la tecla de salto
     
     if (entorno.sePresiono('w')  ) {
+        
         velocidadVertical = -FUERZA_SALTO; // Aplica la fuerza hacia arriba
         enElAire = true; // Marca que está en el aire
         colision=false;
@@ -72,8 +73,9 @@ public void mover() {
             xInicial -= velocidad; // Movimiento a la izquierda
             direccion = false; // Mirar a la izquierda
         }
-    // Siempre aplica gravedad
-    aplicarGravedad(); // Asegúrate de gestionar correctamente la colisión
+
+    
+    aplicarGravedad();  //baja en y al objeto
     if (colision){
         enElAire=false;
     }

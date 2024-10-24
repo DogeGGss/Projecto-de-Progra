@@ -19,7 +19,7 @@ public class Conjuntognomos {
         for (int i = 0; i < Todoslosgnomos.length; i++) {
             if (this.Todoslosgnomos[i] == null) {
                 double x = 1920/2; // Cambia la posición x de cada gnomo
-                double y = 100;           // Puedes cambiar y según lo que necesites
+                double y = 30;           // Puedes cambiar y según lo que necesites
                 this.Todoslosgnomos[i] = new Gnomos(x, y, 0.4, entorno);
             }
             this.Todoslosgnomos[i].dibujarEseGnomo(Todoslosgnomos[i].getxInicial(), Todoslosgnomos[i].getyInicial());

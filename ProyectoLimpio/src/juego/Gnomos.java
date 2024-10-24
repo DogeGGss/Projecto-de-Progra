@@ -16,10 +16,14 @@ public class Gnomos {
     public Image imagenInicial; //imagen con el sentido establecido por la direccion
     private boolean direccion; // True el gnomo mira a la derecha, false si a la izquierda
     private Entorno entorno; // Referencia al entorno de juego
-    private boolean colision=false;//true si esta sobre una plataforma, false sino
+    public boolean colision;//true si esta sobre una plataforma, false sino
     public boolean flag;
     public boolean enElAire;
     public int tiempoInicial;
+    public double gravedad;
+    
+
+
 
 
     public Gnomos(double xInicial,double yInicial,double escala,Entorno entorno){
@@ -48,11 +52,13 @@ public class Gnomos {
 
     public void moverGnomo() {
              // Movimiento continuo del gnomo
+           
         if (direccion) {
             xInicial += velocidad; // Movimiento a la derecha
         } else {
             xInicial -= velocidad; // Movimiento a la izquierda
         }
+    
         // Solo cambia de dirección si hay una colisión
         if (colision&&flag) {
             Random rand = new Random();
@@ -64,17 +70,7 @@ public class Gnomos {
         
         
         public void aplicarGravedadGnomos() {
-            double GRAVEDAD = 0.2; // Valor de gravedad
-            double VELOCIDAD_MAXIMA_CAIDA = 5.0; // Limita la velocidad de caída
-                // aplica la gravedad
-                this.yInicial += velocidadVertical; 
-                velocidadVertical += GRAVEDAD; 
-                
-                // Limitar la velocidad de caída
-                if (velocidadVertical > VELOCIDAD_MAXIMA_CAIDA) {
-                    velocidadVertical = VELOCIDAD_MAXIMA_CAIDA;
-                }
-            
+            this.yInicial += this.gravedad; 
         }   
 
          //getters y setters 
@@ -156,6 +152,13 @@ public class Gnomos {
 
     public void setColision(boolean colision) {
         this.colision = colision;
+    }
+    public double getGravedad() {
+        return gravedad;
+    }
+
+    public void setGravedad(double gravedad) {
+        this.gravedad = gravedad;
     }
 
     public int getAltura() {

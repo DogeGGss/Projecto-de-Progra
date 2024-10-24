@@ -14,12 +14,15 @@ public class Tortugas {
     private Image imagen1; // Imagen de la tortuga mirando a la derecha
     private Image imagen2; // Imagen de la tortuga mirando a la izquierda
     public Image imagenInicial; //imagen con el sentido establecido por la direccion
-    private boolean direccion; // True la tortuga mira a la derecha, false si a la izquierda
+    public boolean direccion; // True la tortuga mira a la derecha, false si a la izquierda
     private Entorno entorno; // Referencia al entorno de juego
-    private boolean colisionLateral=false;//true si esta sobre una plataforma, false sino
+    public boolean colisionLateral=false;//true si esta sobre una plataforma, false sino
     public boolean flag;
     public boolean enElAire;
     public int tiempoInicial;
+    public double gravedad;
+    public boolean colision;
+
 
 
     public Tortugas(double xInicial,double yInicial,double escala,Entorno entorno){
@@ -53,27 +56,19 @@ public class Tortugas {
    } else {
        xInicial -= velocidad; // Movimiento a la izquierda
    }
-   // Solo cambia de dirección si hay una colisión
-   if (colisionLateral) {
-       direccion = !direccion; // Cambia la dirección
+   if(colisionLateral&&colision){
+    direccion=!direccion;
    }
-   aplicarGravedadTortugas(); // Aplicar gravedad en cada tick
+   
+   aplicarGravedad();// Aplicar gravedad en cada tick
 }
    
    
-   public void aplicarGravedadTortugas() {
-       double GRAVEDAD = 0.2; // Valor de gravedad
-       double VELOCIDAD_MAXIMA_CAIDA = 5.0; // Limita la velocidad de caída
-           // aplica la gravedad
-           this.yInicial += velocidadVertical; 
-           velocidadVertical += GRAVEDAD; 
-           
-           // Limitar la velocidad de caída
-           if (velocidadVertical > VELOCIDAD_MAXIMA_CAIDA) {
-               velocidadVertical = VELOCIDAD_MAXIMA_CAIDA;
-           }
-       
-   }
+public void aplicarGravedad() {
+    // aplica la gravedad
+    this.yInicial += this.gravedad; 
+
+}   
 
 public double getxInicial() {
     return xInicial;
@@ -186,6 +181,14 @@ public int getTiempoInicial() {
 public void setTiempoInicial(int tiempoInicial) {
     this.tiempoInicial = tiempoInicial;
 }   
+
+public double getGravedad() {
+    return gravedad;
+}
+
+public void setGravedad(double gravedad) {
+    this.gravedad = gravedad;
+}
 
 public int getAltura() {
     return (int) (imagen1.getHeight(null) * escala); // Retorna la altura de Pep escalada
