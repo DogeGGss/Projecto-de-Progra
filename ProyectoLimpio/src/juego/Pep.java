@@ -19,7 +19,7 @@ public class Pep {
     public boolean yaSalto=false;
     private boolean direccion; // True si Pep mira a la derecha, false si a la izquierda
     private Entorno entorno; // Referencia al entorno de juego
-    private boolean colision=false;
+    public boolean colision=false;
     public double GRAVEDAD=0.2;
     public int contadorDeTiempo;
 
@@ -58,7 +58,7 @@ public class Pep {
 public void mover() {
     // Verifica si se está presionando la tecla de salto
     
-    if (entorno.sePresiono('w') && !enElAire && colision ) {
+    if (entorno.sePresiono('w')  ) {
         velocidadVertical = -FUERZA_SALTO; // Aplica la fuerza hacia arriba
         enElAire = true; // Marca que está en el aire
         colision=false;

@@ -105,12 +105,8 @@ public class Juego extends InterfaceJuego {
             int altoIsla = miMapa.islas[i].getAltoIsla();
             
             boolean colisionX = (xPep + anchoPep / 2 + Margen > xIsla - anchoIsla / 2) && (xPep - anchoPep / 2 - Margen < xIsla + anchoIsla / 2);
-            boolean colisionY = (yPep + altoPep / 2 + Margen > yIsla - altoIsla / 2) && (yPep - altoPep / 2 - Margen < yIsla + altoIsla / 2);
-    
-            // Depuración
-            System.out.println("Pep: (" + xPep + ", " + yPep + "), Isla: (" + xIsla + ", " + yIsla + ")");
-            System.out.println("Colision X: " + colisionX + ", Colision Y: " + colisionY);
-    
+            boolean colisionY =  (yPep + altoPep > yIsla) && (yPep < yIsla + altoIsla) && (pep.getY() + altoPep <= yIsla +1);
+
             if (colisionX && colisionY) {
                 return true;
             }
@@ -121,16 +117,24 @@ public class Juego extends InterfaceJuego {
     
 
     private void VerificarColision(){
-        if (ColisionaPep()){
-            pep.GRAVEDAD=0.0;
-        } else {
-            pep.GRAVEDAD=2;
-        }
-        
-    }
+      
+        if (ColisionaPep() && entorno.sePresiono('w') && pep.colision){
+                pep.colision=false;
+                pep.setYInicial(pep.getY()-100);
+                 pep.mover();
                 
+            }  else if(ColisionaPep()){
+                pep.colision=true;
+                  pep.GRAVEDAD=0.0;
+          } else {
+                pep.colision=false;
+                 pep.GRAVEDAD=2;
+        }
             
-
+    }
+        
+    
+                
      private void verificarColisiones() {
         // Obtener la posición y dimensiones de Pep
         double xPep = pep.getXInicial();
