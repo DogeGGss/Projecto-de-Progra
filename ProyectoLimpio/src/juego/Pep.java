@@ -23,12 +23,6 @@ public class Pep {
     public double GRAVEDAD=0.2;
     public int contadorDeTiempo;
 
-    public double getGRAVEDAD() {
-        return GRAVEDAD;
-    }
-    public void setGRAVEDAD(double gRAVEDAD) {
-        GRAVEDAD = gRAVEDAD;
-    }
     // Constructor de la clase Pep
     public Pep(double xInicial, double yInicial, double angulo, double escala, Entorno entorno) {
         this.xInicial = xInicial; // Inicializa la posición X
@@ -54,16 +48,14 @@ public class Pep {
         }
        
     }
+    
 // Método para mover a Pep
 public void mover() {
     // Verifica si se está presionando la tecla de salto
-    
     if (entorno.sePresiono('w')  ) {
-        
         velocidadVertical = -FUERZA_SALTO; // Aplica la fuerza hacia arriba
         enElAire = true; // Marca que está en el aire
-        colision=false;
-        
+        colision=false; 
     }
         if (entorno.estaPresionada('d') ) {
             xInicial += velocidad; // Movimiento a la derecha
@@ -73,21 +65,16 @@ public void mover() {
             xInicial -= velocidad; // Movimiento a la izquierda
             direccion = false; // Mirar a la izquierda
         }
-
-    
     aplicarGravedad();  //baja en y al objeto
     if (colision){
         enElAire=false;
     }
 }
 
-
-
 // Método para aplicar gravedad a Pep
 public void aplicarGravedad() {
         // aplica la gravedad
-        this.yInicial += this.GRAVEDAD; 
- 
+        this.yInicial += this.GRAVEDAD;  
 }   
 
     //getters y setters 
@@ -127,5 +114,11 @@ public void aplicarGravedad() {
     }
     public Image getImagen1() {
         return imagen1;
+    }
+    public double getGRAVEDAD() {
+        return GRAVEDAD;
+    }
+    public void setGRAVEDAD(double gRAVEDAD) {
+        GRAVEDAD = gRAVEDAD;
     }
 }

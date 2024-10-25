@@ -18,6 +18,17 @@ public class Isla {
     final Entorno entorno;
     final Image imagen;
 
+
+    public Isla(int xInicial, int yInicial, int ancho, int alto, Entorno entorno) {
+        this.xInicial=xInicial;
+        this.anchoIsla = ancho;
+        this.altoIsla = alto;
+        this.xCentro = 1920 / 2;
+        this.yInicial = yInicial;
+        this.entorno = entorno;
+        this.imagen = Toolkit.getDefaultToolkit().getImage("Plataformas.png");
+       
+    }
     public int getxInicial() {
         return xInicial;
     }
@@ -45,16 +56,5 @@ public class Isla {
     }
 
 
-
-    public Isla(int xInicial, int yInicial, int ancho, int alto, Entorno entorno) {
-        this.xInicial=xInicial;
-        this.anchoIsla = ancho;
-        this.altoIsla = alto;
-        this.xCentro = 1920 / 2;
-        this.yInicial = yInicial;
-        this.entorno = entorno;
-        this.imagen = Toolkit.getDefaultToolkit().getImage("Plataformas.png");
-       
-    }
    
 }

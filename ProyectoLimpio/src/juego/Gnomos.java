@@ -17,15 +17,12 @@ public class Gnomos {
     private boolean direccion; // True el gnomo mira a la derecha, false si a la izquierda
     private Entorno entorno; // Referencia al entorno de juego
     public boolean colision;//true si esta sobre una plataforma, false sino
-    public boolean flag;
     public boolean enElAire;
     public int tiempoInicial;
     public double gravedad;
+
     
-
-
-
-
+    
     public Gnomos(double xInicial,double yInicial,double escala,Entorno entorno){
     this.xInicial=xInicial;
     this.yInicial=yInicial;
