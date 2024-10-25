@@ -41,11 +41,15 @@ public class Gnomos {
     }
     
     public void dibujarEseGnomo(double x,double y){
+        if(colision){
         if(direccion){
             this.imagenInicial=imagen1;
         } else {
             this.imagenInicial=imagen2;
         }
+    }  else {
+        this.imagenInicial=imagen1;
+    }
         
         entorno.dibujarImagen(imagenInicial,x,y,0,escala);
     }
@@ -60,7 +64,7 @@ public class Gnomos {
         }
     
         // Solo cambia de dirección si hay una colisión
-        if (colision&&flag) {
+        if (!colision) {
             Random rand = new Random();
              boolean n = rand.nextBoolean();
             direccion = n; // Cambia la dirección

@@ -216,84 +216,31 @@ public class Juego extends InterfaceJuego {
             }
         }
     }
-        
-    
-                
-     private void verificarColisiones() {
-        // Obtener la posición y dimensiones de Pep
-        double xPep = pep.getXInicial();
-        double yPep = pep.getY();
-        int anchoPep = pep.getAnchoPep();
-        int altoPep = pep.getAltura();
-        int Margen=15;
-        
-        for(int i=0;i<miMapa.islas.length-1;i++){
-                // Obtener la posición y dimensiones de la isla
-                int xIsla = miMapa.islas[i].getxInicial();
-                int yIsla = miMapa.islas[i].getyInicial();
-                int anchoIsla = miMapa.islas[i].getAnchoIsla();
-                int altoIsla = miMapa.islas[i].getAltoIsla();
-
-                
-                for (int j = 0; i < 4; i++) {
-                    boolean colisionXgnomos = this.gnomos.Todoslosgnomos[j].getxInicial() + this.gnomos.Todoslosgnomos[j].getAncho() > xIsla 
-                        && this.gnomos.Todoslosgnomos[j].getxInicial() < xIsla + anchoIsla;
-                    boolean colisionYgnomos = this.gnomos.Todoslosgnomos[j].getyInicial() + this.gnomos.Todoslosgnomos[j].getAltura() > yIsla 
-                        && this.gnomos.Todoslosgnomos[j].getyInicial() < yIsla + altoIsla;
-
-                    if (colisionXgnomos && colisionYgnomos) {
-                        this.gnomos.Todoslosgnomos[j].setyInicial(yIsla - this.gnomos.Todoslosgnomos[j].getAltura()); // Ajusta la posición del gnomo justo encima de la isla
-                        this.gnomos.Todoslosgnomos[j].setColision(true);  // Todos los gnomos tienen colisión
-                    } else {
-                       
-                    }
-                }
-                for (int k = 0; i < 4; i++) {
-                   
-                    //cronometro para cambiar de direccion despues de una cantidad especifica de ticks
-                    if(this.gnomos.Todoslosgnomos[k].tiempoInicial==40){
-                        this.gnomos.Todoslosgnomos[k].flag=true;
-                        this.gnomos.Todoslosgnomos[k].tiempoInicial=0; 
-                     } else {
-                        this.gnomos.Todoslosgnomos[k].tiempoInicial++;
-                        this.gnomos.Todoslosgnomos[k].flag=false;
-                     }
-                   
-                }
-
             
-        }
-    }
-            
-        
-    
 
     public void tick() {
-
+        //dibuja y crea el fondo y las plataforma
         miMapa.dibujarFondo();
         miMapa.dibujarRectangulos();
+
+        //dibuja y crea a Pep, los gnomos y las tortugas
         pep.dibujar();
         gnomos.dibujarGnomos();
         tortugas.dibujarTortugas();
+
+        //le da la capacidad de moverse a Pep
         pep.mover();
-        gnomos.Todoslosgnomos[0].moverGnomo();
-        gnomos.Todoslosgnomos[1].moverGnomo();
-        gnomos.Todoslosgnomos[2].moverGnomo();
-        gnomos.Todoslosgnomos[3].moverGnomo();
 
-       tortugas.conjunTortugas[0].moverTortuga();
-       tortugas.conjunTortugas[1].moverTortuga();
-       tortugas.conjunTortugas[2].moverTortuga();
-       tortugas.conjunTortugas[3].moverTortuga();
-
-
-        //verificarColisiones(); 
-
-        verificarColisionesTortugas(this.tortugas.conjunTortugas);
-       // verificarColisionesTortugasLateral(this.tortugas.conjunTortugas);
-        VerificarColision();
-
-        verificarColisionesGnomos(this.gnomos.Todoslosgnomos);
+        //le otorga movimiento a los gnomos y tortugas
+        for(int i=0;i<4;i++){
+            gnomos.Todoslosgnomos[i].moverGnomo();
+            tortugas.conjunTortugas[i].moverTortuga();
+        }
+      
+        //verifica si se encuentran sobre una plataforma
+        verificarColisionesTortugas(this.tortugas.conjunTortugas); //con una subfuncion detecta los extremos de la isla y hace que no se caiga
+        VerificarColision(); 
+        verificarColisionesGnomos(this.gnomos.Todoslosgnomos); //con una subfuncion detecta que el gnomo esta en el aire para cambiar de direccion aleatoria
 
 
     }
