@@ -21,6 +21,7 @@ public class Gnomos {
     public int tiempoInicial;
     public double gravedad;
 
+
     
     
     public Gnomos(double xInicial,double yInicial,double escala,Entorno entorno){

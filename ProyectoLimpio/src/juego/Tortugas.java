@@ -51,14 +51,18 @@ public class Tortugas {
 
     public void moverTortuga() {
         // Movimiento continuo del gnomo
-   if (direccion) {
-       xInicial += velocidad; // Movimiento a la derecha
-   } else {
-       xInicial -= velocidad; // Movimiento a la izquierda
-   }
-   if(colisionLateral&&colision){
-    direccion=!direccion;
-   }
+    if(colision){
+        if (direccion) {
+            xInicial += velocidad; // Movimiento a la derecha
+        } else {
+            xInicial -= velocidad; // Movimiento a la izquierda
+        }
+        if(colisionLateral){
+            direccion=!direccion;
+           }
+    }
+   
+  
    
    aplicarGravedad();// Aplicar gravedad en cada tick
 }

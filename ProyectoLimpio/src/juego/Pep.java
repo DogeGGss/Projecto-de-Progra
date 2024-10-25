@@ -22,6 +22,7 @@ public class Pep {
     public boolean colision=false;
     public double GRAVEDAD=0.2;
     public int contadorDeTiempo;
+    public boolean finDelJuego=false;
 
     // Constructor de la clase Pep
     public Pep(double xInicial, double yInicial, double angulo, double escala, Entorno entorno) {

@@ -12,6 +12,7 @@ public class Juego extends InterfaceJuego {
     final Pep pep;
     final Conjuntognomos gnomos;
    final Conjuntotortugas tortugas;
+   
     
 
     Juego() {
@@ -182,6 +183,7 @@ public class Juego extends InterfaceJuego {
     }
     
     private void VerificarColision(){
+        ColisionConBordesLateralesPep();
         if (ColisionaPep() && entorno.sePresiono('w') && pep.colision){
                 pep.colision=false;
                 pep.setYInicial(pep.getY()-100);
@@ -192,8 +194,23 @@ public class Juego extends InterfaceJuego {
                   pep.GRAVEDAD=0.0;
           } else {
                 pep.colision=false;
-                 pep.GRAVEDAD=2;
+                 pep.GRAVEDAD=2.3;
         }      
+    }
+
+    //Que pep  no atraviese los bordes de la pantalla 
+    private void ColisionConBordesLateralesPep(){
+        //Toma las dimenciones de pep
+        double xPep = pep.getXInicial();
+        double anchoPep = pep.getAnchoPep();
+    
+        double bordeIzquierdoPep = xPep - anchoPep / 2;
+        double bordeDerechoPep = xPep + anchoPep / 2;
+        if(bordeIzquierdoPep<0){
+            pep.setXInicial(0);
+        } else if(bordeDerechoPep>1920){
+            pep.setXInicial(1920);
+        }
     }
 
     private boolean ColisionesGnomos(Gnomos gnomo){
@@ -230,6 +247,160 @@ public class Juego extends InterfaceJuego {
             }
         }
     }
+
+    private boolean PepConTortuga(Tortugas[] tortuga) {
+        // Dimensiones de Pep
+        double xPep = pep.getXInicial();
+        double anchoPep = pep.getAnchoPep();
+        double yPep = pep.getY();
+        double altoPep = pep.getAltura();
+    
+        double bordeIzquierdoPep = xPep - anchoPep / 2;
+        double bordeDerechoPep = xPep + anchoPep / 2;
+        double cabezaPep = yPep - altoPep / 2;
+        double piesPep = yPep + altoPep / 2;
+    
+        for (int i = 0; i < tortuga.length; i++) {
+            // Dimensiones de la tortuga
+            double xTortuga = tortuga[i].getxInicial();
+            double anchoTortuga = tortuga[i].getAncho();
+            double yTortuga = tortuga[i].getyInicial();
+            double altoTortuga = tortuga[i].getAltura();
+    
+            // Bordes de la tortuga en x
+            double bordeIzquierdoTortuga = xTortuga - anchoTortuga / 2;
+            double bordeDerechoTortuga = xTortuga + anchoTortuga / 2;
+            double cabezaTortuga = yTortuga - altoTortuga / 2;
+            double piesTortuga = yTortuga + altoTortuga / 2;
+    
+            // Verifica si hay colisión
+            if (!(bordeIzquierdoPep > bordeDerechoTortuga || 
+                  bordeDerechoPep < bordeIzquierdoTortuga || 
+                  cabezaPep > piesTortuga || 
+                  piesPep < cabezaTortuga)) {
+                return true; // Hay colisión
+            }
+        }
+        return false; // No hay colisión
+    }
+
+    private void queGnomoFueEliminado(Gnomos[] gnomo) {
+        for (int i = 0; i < gnomo.length; i++) {
+            // Verifica si el gnomo colisiona con Pep
+            if (GnomosSalvado(gnomo[i]) && gnomo[i].getyInicial() > 500) {
+                this.gnomos.contadorGnomosSalvados++;
+                gnomo[i]=null;
+            }
+    
+            // Verifica si el gnomo fue eliminado
+            if (GnomoEliminado(gnomo[i]) || gnomo[i].getyInicial()>1080) {
+                this.gnomos.contadorGnomosEliminados++;
+                gnomo[i] = null; // Establece el gnomo como null
+            }
+        }
+    }
+    
+    // Verifica si el gnomo colisiona con una tortuga
+    private boolean GnomoEliminado(Gnomos gnomo) {
+        // Dimensiones del gnomo
+        double xGnomo = gnomo.getxInicial();
+        double anchoGnomo = gnomo.getAncho();
+        double yGnomo = gnomo.getyInicial();
+        double altoGnomo = gnomo.getAltura();
+    
+        // Bordes del gnomo
+        double bordeIzquierdoGnomo = xGnomo - anchoGnomo / 2;
+        double bordeDerechoGnomo = xGnomo + anchoGnomo / 2;
+        double cabezaGnomo = yGnomo - altoGnomo / 2;
+        double piesGnomo = yGnomo + altoGnomo / 2;
+    
+        // Recorre el array de tortugas
+        for (int i = 0; i < this.tortugas.conjunTortugas.length; i++) {
+            Tortugas tortuga = this.tortugas.conjunTortugas[i];
+    
+            // Si la tortuga no está presente, continúa
+            if (tortuga == null) {
+                continue;
+            }
+    
+            // Dimensiones de la tortuga
+            double xTortuga = tortuga.getxInicial();
+            double anchoTortuga = tortuga.getAncho();
+            double yTortuga = tortuga.getyInicial();
+            double altoTortuga = tortuga.getAltura();
+    
+            // Bordes de la tortuga
+            double bordeIzquierdoTortuga = xTortuga - anchoTortuga / 2;
+            double bordeDerechoTortuga = xTortuga + anchoTortuga / 2;
+            double cabezaTortuga = yTortuga - altoTortuga / 2;
+            double piesTortuga = yTortuga + altoTortuga / 2;
+    
+            // Verifica si hay colisión
+            if (!(bordeIzquierdoGnomo > bordeDerechoTortuga || 
+                  bordeDerechoGnomo < bordeIzquierdoTortuga || 
+                  cabezaGnomo > piesTortuga || 
+                  piesGnomo < cabezaTortuga)) {
+                return true; // Hay colisión
+            }
+        }
+        return false; // No hay colisión
+    }
+    
+
+ //dice si el gnomo colisiona con pep
+     private boolean GnomosSalvado(Gnomos gnomo){
+         // Dimensiones de Pep
+         double xPep = pep.getXInicial();
+         double anchoPep = pep.getAnchoPep();
+         double yPep = pep.getY();
+         double altoPep = pep.getAltura();
+     
+         double bordeIzquierdoPep = xPep - anchoPep / 2;
+         double bordeDerechoPep = xPep + anchoPep / 2;
+         double cabezaPep = yPep - altoPep / 2;
+         double piesPep = yPep + altoPep / 2;
+     
+             // Dimensiones del gnomo
+             double xGnomo = gnomo.getxInicial();
+             double anchoGnomo = gnomo.getAncho();
+             double yGnomo = gnomo.getyInicial();
+             double altoGnomo = gnomo.getAltura();
+     
+             // Bordes de la tortuga en x
+             double bordeIzquierdoGnomo = xGnomo - anchoGnomo/ 2;
+             double bordeDerechoGnomo =xGnomo +anchoGnomo / 2;
+             double cabezaGnomo = yGnomo - altoGnomo / 2;
+             double piesGnomo = yGnomo + altoGnomo / 2;
+     
+             // Verifica si hay colisión
+             if (!(bordeIzquierdoPep > bordeDerechoGnomo || 
+                   bordeDerechoPep < bordeIzquierdoGnomo || 
+                   cabezaPep > piesGnomo || 
+                   piesPep < cabezaGnomo)) {
+                 return true; // Hay colisión
+             }
+         return false; // No hay colisión
+     }
+ 
+    //que pasa segun con que colisione pep
+    private boolean PepSeMuere(){
+        
+        if(PepConTortuga(this.tortugas.conjunTortugas) || pep.getY()>1080 || this.gnomos.contadorGnomosEliminados==8){
+            return true;    
+        }
+        return false;
+    }
+
+    private void PepCondicion(){
+        if(PepSeMuere()){
+            pep.finDelJuego=true;
+        }
+        if(pep.finDelJuego){
+            entorno.dibujarImagen(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\Projecto-de-Progra\\ProyectoLimpio\\Derrota.jpg"), 960, 530, 0, 2);
+        }
+    }
+
+
     //calcula los minutos y segundos transcurridos
     private String tiempoTranscurrido() {
         int milisegundos = entorno.tiempo();
@@ -249,20 +420,25 @@ public class Juego extends InterfaceJuego {
         return resultado;
     }
 
-    //cuenta los gnomos eliminados por las tortugas o que calleron la vacio y salvados por Pep
-    private String contadorGnomos(){
-        return "g";
+    //cuenta los gnomos eliminados (por las tortugas o que calleron la vacio)
+    private String contadorGnomosEliminados(){
+        return "gnomos eliminados:"+this.gnomos.contadorGnomosEliminados;
+    }
+    //gnomos salvados por Pep
+    private String contadorGnomosSalvados(){
+        return "gnomos salvados:"+this.gnomos.contadorGnomosSalvados;
     }
 
     //cuenta las tortugas eliminadas por Pep
-    private String contadorTortugas(){
+    private String contadorTortugasEliminadas(){
         return "t";
     }
     
     //muestra en pantalla todos los marcadores
     private void Marcadores(){
         entorno.escribirTexto(tiempoTranscurrido(), 50, 50);
-        entorno.escribirTexto(contadorGnomos(), 250, 50);
+       entorno.escribirTexto(contadorGnomosEliminados(), 250, 50);
+       entorno.escribirTexto(contadorGnomosSalvados(), 570, 50);
 
     }
             
@@ -290,8 +466,11 @@ public class Juego extends InterfaceJuego {
         VerificarColision(); 
         verificarColisionesGnomos(this.gnomos.Todoslosgnomos); //con una subfuncion detecta que el gnomo esta en el aire para cambiar de direccion aleatoria
         
+        queGnomoFueEliminado(this.gnomos.Todoslosgnomos);
         //Muestra los datos del juego en la parte superior
         Marcadores();
+
+        PepCondicion();
     }
 
     public static void main(String[] args) {
