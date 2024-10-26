@@ -12,6 +12,7 @@ public class Juego extends InterfaceJuego {
     final Pep pep;
     final Conjuntognomos gnomos;
    final Conjuntotortugas tortugas;
+   final Boladefuego[] fuego;
    
     
 
@@ -46,6 +47,14 @@ public class Juego extends InterfaceJuego {
         this.gnomos= new Conjuntognomos(entorno);
         //conjunto de tortugas
         this.tortugas=new Conjuntotortugas(entorno);
+
+        Boladefuego[] poder=new Boladefuego[1];
+        poder[0] = new Boladefuego(entorno);
+        this.fuego=poder;
+
+
+
+
         //inicia el juego!
         this.entorno.iniciar();
     }
@@ -182,21 +191,25 @@ public class Juego extends InterfaceJuego {
         return false;
     }
     
-    private void VerificarColision(){
-        ColisionConBordesLateralesPep();
-        if (ColisionaPep() && entorno.sePresiono('w') && pep.colision){
-                pep.colision=false;
-                pep.setYInicial(pep.getY()-100);
-                pep.mover();
-                
-            }  else if(ColisionaPep()){
-                pep.colision=true;
-                  pep.GRAVEDAD=0.0;
-          } else {
-                pep.colision=false;
-                 pep.GRAVEDAD=2.3;
-        }      
+    private void VerificarColision() {
+        if (ColisionaPep()) {
+            // Si detecta colisión, establecemos colision=true y apagamos la gravedad
+            pep.colision = true;
+            pep.GRAVEDAD = 0.0;
+            System.out.println("colision...");
+    
+        
+        } else {
+            // Si no está en colisión, se aplica gravedad y se establece colision=false
+            pep.colision = false;
+            pep.GRAVEDAD = 2.3;
+            System.out.println("sin colision    ...");
+        }
     }
+    
+    
+    
+
 
     //Que pep  no atraviese los bordes de la pantalla 
     private void ColisionConBordesLateralesPep(){
@@ -396,7 +409,7 @@ public class Juego extends InterfaceJuego {
             pep.finDelJuego=true;
         }
         if(pep.finDelJuego){
-            entorno.dibujarImagen(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\Projecto-de-Progra\\ProyectoLimpio\\Derrota.jpg"), 960, 530, 0, 2);
+            entorno.dibujarImagen(Toolkit.getDefaultToolkit().getImage("Derrota.jpg"), 960, 530, 0, 2);
         }
     }
 
@@ -452,6 +465,9 @@ public class Juego extends InterfaceJuego {
         gnomos.dibujarGnomos();
         tortugas.dibujarTortugas();
 
+            if (entorno.sePresiono('c')) { 
+                this.fuego[0].dibujarboladefuego(pep);
+            }
         //le da la capacidad de moverse a Pep
         pep.mover();
 
