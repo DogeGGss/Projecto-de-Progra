@@ -301,7 +301,18 @@ public class Juego extends InterfaceJuego {
             }
         }
     }
-    
+    private void queBolaDeFuegoFueEliminada(Boladefuego[] bolasDeFuego) {
+        for (int i = 0; i < bolasDeFuego.length; i++) {
+            if (bolasDeFuego[i] != null) {
+                // Verifica si la bola de fuego está fuera de los límites laterales de la pantalla
+                if (bolasDeFuego[i].getxInicial() < 0 || bolasDeFuego[i].getxInicial() > 1900) { // 1900 es el ancho de la pantalla
+                    bolasDeFuego[i] = null; // Establece la bola de fuego como null
+                }
+            }
+        }
+    }
+
+
     // Verifica si el gnomo colisiona con una tortuga
     private boolean GnomoEliminado(Gnomos gnomo) {
         // Dimensiones del gnomo
@@ -461,7 +472,7 @@ public class Juego extends InterfaceJuego {
         //le da la capacidad de moverse a Pep
         pep.mover();
         ColisionConBordesLateralesPep();
-
+        
        
         //le otorga movimiento a los gnomos y tortugas
         for(int i=0;i<4;i++){
@@ -479,7 +490,7 @@ public class Juego extends InterfaceJuego {
         Marcadores();
         PepCondicion();
         this.fuego.crearBolaDeFuego(pep);
-       
+        queBolaDeFuegoFueEliminada(fuego.poderDeFuego);
     }
 
     public static void main(String[] args) {

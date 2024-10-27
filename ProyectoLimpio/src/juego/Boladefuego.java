@@ -24,8 +24,8 @@ public class Boladefuego {
     this.xInicial=xInicial;
     this.yInicial=yInicial;
     this.entorno=entorno;
-    this.imagen1=Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\Projecto-de-Progra\\ProyectoLimpio\\BolaDefuego.gif");
-    this.imagen2=Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\Projecto-de-Progra\\ProyectoLimpio\\BolaDUfuego.gif");
+    this.imagen1=Toolkit.getDefaultToolkit().getImage("BolaDefuego.gif");
+    this.imagen2=Toolkit.getDefaultToolkit().getImage("BolaDUfuego.gif");
     this.direccion=direccion;
     entorno.dibujarImagen(imagen1,xInicial,yInicial,0,escala);
     }
