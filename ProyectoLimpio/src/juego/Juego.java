@@ -20,13 +20,11 @@ public class Juego extends InterfaceJuego {
         this.entorno = new Entorno(this, "Proyecto para TP", 1920, 1080);
 
         int cantIslas = 1;
-        int xInicial = 960;
-        int yInicial = 940;
         int ancho = 150; // Aumenta el ancho de la isla
         int alto = 50;   // Puedes ajustar el alto si es necesario
         int cantidadFilas = 5;
-        double xInicialPep = 300;
-        double yInicialPep = 280; // Ajusta esta posición según sea necesario
+        double xInicialPep = 590;
+        double yInicialPep = 657.5; // Ajusta esta posición según sea necesario
         double anguloPep = 0;      
         double escalaPep = 0.3;  
        
@@ -214,7 +212,7 @@ public class Juego extends InterfaceJuego {
             pep.setXInicial(1810+(int)anchoPep/2);
         }
     }
-
+    //verifica si un gnomo especifico se encuentra sobre una
     private boolean ColisionesGnomos(Gnomos gnomo){
         double xGnomo = gnomo.getxInicial();
         double yGnomo = gnomo.getyInicial();
@@ -237,7 +235,7 @@ public class Juego extends InterfaceJuego {
         }
         return false;
     }
-
+    //si hay colision el gnomo se para sobre la plataforma, en caso contrario cae por la fuerza de gravedad
     private void verificarColisionesGnomos(Gnomos[] gnomo){
         for(int i=0; i<gnomo.length;i++){
             if (ColisionesGnomos(gnomo[i])){
@@ -301,13 +299,60 @@ public class Juego extends InterfaceJuego {
             }
         }
     }
-    private void queBolaDeFuegoFueEliminada(Boladefuego[] bolasDeFuego) {
+
+    private boolean bolaDeFuegoTocaBorde(Boladefuego bolaDeFuego) {
+                // Verifica si la bola de fuego está fuera de los límites laterales de la pantalla
+                if (bolaDeFuego.getxInicial() < 0 || bolaDeFuego.getxInicial() > 1900) { // 1900 es el ancho de la pantalla
+                    return true; // Establece la bola de fuego como null
+                }        
+        return false;
+    }
+
+    private boolean bolaDeFuegoColisionTortuga(Boladefuego bolaDeFuego){
+            //dimenciones de la bola de fuego
+            double xBolaDeFuego =bolaDeFuego.getxInicial();
+            double anchoBolaDeFuego = bolaDeFuego.getAncho();
+            double yBolaDeFuego = bolaDeFuego.getyInicial();
+            double altoBolaDeFuego = bolaDeFuego.getAltura();
+
+            double bordeIzquierdoBolaDeFuego = xBolaDeFuego -anchoBolaDeFuego / 2;
+            double bordeDerechoBolaDeFuego = xBolaDeFuego + anchoBolaDeFuego / 2;
+            double cabezaBolaDeFuego= yBolaDeFuego - altoBolaDeFuego / 2;
+            double piesBolaDeFuego= yBolaDeFuego + altoBolaDeFuego / 2;
+
+        for (int i = 0; i < this.tortugas.conjunTortugas.length; i++) {
+            // Dimensiones de la tortuga
+            double xTortuga = this.tortugas.conjunTortugas[i].getxInicial();
+            double anchoTortuga = this.tortugas.conjunTortugas[i].getAncho();
+            double yTortuga = this.tortugas.conjunTortugas[i].getyInicial();
+            double altoTortuga = this.tortugas.conjunTortugas[i].getAltura();
+    
+            // Bordes de la tortuga en x
+            double bordeIzquierdoTortuga = xTortuga - anchoTortuga / 2;
+            double bordeDerechoTortuga = xTortuga + anchoTortuga / 2;
+            double cabezaTortuga = yTortuga - altoTortuga / 2;
+            double piesTortuga = yTortuga + altoTortuga / 2;
+    
+            // Verifica si hay colisión
+            if (!(bordeIzquierdoBolaDeFuego > bordeDerechoTortuga || 
+            bordeDerechoBolaDeFuego< bordeIzquierdoTortuga || 
+            cabezaBolaDeFuego> piesTortuga || 
+            piesBolaDeFuego < cabezaTortuga)) {
+                this.tortugas.conjunTortugas[i]=null; //elimina la tortuga que fue colisionada por el poder del sol
+                this.tortugas.contadorEnemigosEliminados++;
+                return true; // Hay colisión
+            }
+        }
+        return false; // No hay colisión
+
+    }
+
+    private void bolaDeFuegoColisioes(Boladefuego[] bolasDeFuego){
         for (int i = 0; i < bolasDeFuego.length; i++) {
             if (bolasDeFuego[i] != null) {
-                // Verifica si la bola de fuego está fuera de los límites laterales de la pantalla
-                if (bolasDeFuego[i].getxInicial() < 0 || bolasDeFuego[i].getxInicial() > 1900) { // 1900 es el ancho de la pantalla
-                    bolasDeFuego[i] = null; // Establece la bola de fuego como null
-                }
+             if(bolaDeFuegoTocaBorde(bolasDeFuego[i])||bolaDeFuegoColisionTortuga(bolasDeFuego[i])){
+                bolasDeFuego[i] = null;
+             }
             }
         }
     }
@@ -435,16 +480,16 @@ public class Juego extends InterfaceJuego {
 
     //cuenta los gnomos eliminados (por las tortugas o que calleron la vacio)
     private String contadorGnomosEliminados(){
-        return "gnomos eliminados:"+this.gnomos.contadorGnomosEliminados;
+        return "Gnomos eliminados:"+this.gnomos.contadorGnomosEliminados;
     }
     //gnomos salvados por Pep
     private String contadorGnomosSalvados(){
-        return "gnomos salvados:"+this.gnomos.contadorGnomosSalvados;
+        return "Gnomos salvados:"+this.gnomos.contadorGnomosSalvados;
     }
 
     //cuenta las tortugas eliminadas por Pep
     private String contadorTortugasEliminadas(){
-        return "t";
+        return "Enemigos matados:" + this.tortugas.contadorEnemigosEliminados;
     }
     
     //muestra en pantalla todos los marcadores
@@ -452,7 +497,8 @@ public class Juego extends InterfaceJuego {
         entorno.escribirTexto(tiempoTranscurrido(), 50, 50);
        entorno.escribirTexto(contadorGnomosEliminados(), 250, 50);
        entorno.escribirTexto(contadorGnomosSalvados(), 570, 50);
-
+       entorno.escribirTexto(contadorTortugasEliminadas(), 1100, 50);
+       
     }
 
 
@@ -490,7 +536,7 @@ public class Juego extends InterfaceJuego {
         Marcadores();
         PepCondicion();
         this.fuego.crearBolaDeFuego(pep);
-        queBolaDeFuegoFueEliminada(fuego.poderDeFuego);
+        bolaDeFuegoColisioes(fuego.poderDeFuego);
     }
 
     public static void main(String[] args) {

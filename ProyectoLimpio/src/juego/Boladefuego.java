@@ -38,13 +38,12 @@ public class Boladefuego {
            // this.xInicial = Nasus.getX() - Nasus.getAnchoPep() /2;
             this.imagenInicial=imagen2;  
         }
-        System.out.println("imprimiendo la bola de fuego");
+       
         entorno.dibujarImagen(imagenInicial,xInicial,yInicial,0,escala);
         moverBola();
     }  
     
     public void moverBola() {   
-        System.out.println("se imprimió");
         if (direccion) {
             xInicial += velocidad; // Movimiento a la derecha
         } else {
@@ -130,6 +129,13 @@ public class Boladefuego {
 
     public void setDireccion(boolean direccion) {
         this.direccion = direccion;
+    }
+
+    public int getAltura() {
+        return (int) (imagen1.getHeight(null) * escala); 
+    }
+    public int getAncho() {
+        return (int) (imagen1.getWidth(null) * escala); 
     }
 
 }
