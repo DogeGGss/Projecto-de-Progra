@@ -12,7 +12,7 @@ public class Juego extends InterfaceJuego {
     final Pep pep;
     final Conjuntognomos gnomos;
    final Conjuntotortugas tortugas;
-   final Boladefuego[] fuego;
+   final ConjuntoDePoder fuego;
    
     
 
@@ -48,12 +48,9 @@ public class Juego extends InterfaceJuego {
         //conjunto de tortugas
         this.tortugas=new Conjuntotortugas(entorno);
 
-        Boladefuego[] poder=new Boladefuego[1];
-        poder[0] = new Boladefuego(entorno);
-        this.fuego=poder;
-
-
-
+        //creamos el array con 1 solo espacio, para que solo se tire el poder de a una vez
+        
+        this.fuego=new ConjuntoDePoder(entorno);
 
         //inicia el juego!
         this.entorno.iniciar();
@@ -195,22 +192,14 @@ public class Juego extends InterfaceJuego {
         if (ColisionaPep()) {
             // Si detecta colisión, establecemos colision=true y apagamos la gravedad
             pep.colision = true;
-            pep.GRAVEDAD = 0.0;
-            System.out.println("colision...");
-    
-        
+            pep.GRAVEDAD = 0.0;      
         } else {
             // Si no está en colisión, se aplica gravedad y se establece colision=false
             pep.colision = false;
-            pep.GRAVEDAD = 2.3;
-            System.out.println("sin colision    ...");
+            pep.GRAVEDAD = 2.3;    
         }
     }
     
-    
-    
-
-
     //Que pep  no atraviese los bordes de la pantalla 
     private void ColisionConBordesLateralesPep(){
         //Toma las dimenciones de pep
@@ -220,9 +209,9 @@ public class Juego extends InterfaceJuego {
         double bordeIzquierdoPep = xPep - anchoPep / 2;
         double bordeDerechoPep = xPep + anchoPep / 2;
         if(bordeIzquierdoPep<0){
-            pep.setXInicial(0);
+            pep.setXInicial((int)anchoPep/2 + 1);
         } else if(bordeDerechoPep>1920){
-            pep.setXInicial(1920);
+            pep.setXInicial(1810+(int)anchoPep/2);
         }
     }
 
@@ -454,7 +443,10 @@ public class Juego extends InterfaceJuego {
        entorno.escribirTexto(contadorGnomosSalvados(), 570, 50);
 
     }
-            
+
+
+
+    
     public void tick() {
         //dibuja y crea el fondo y las plataforma
         miMapa.dibujarFondo();
@@ -465,12 +457,12 @@ public class Juego extends InterfaceJuego {
         gnomos.dibujarGnomos();
         tortugas.dibujarTortugas();
 
-            if (entorno.sePresiono('c')) { 
-                this.fuego[0].dibujarboladefuego(pep);
-            }
+  
         //le da la capacidad de moverse a Pep
         pep.mover();
+        ColisionConBordesLateralesPep();
 
+       
         //le otorga movimiento a los gnomos y tortugas
         for(int i=0;i<4;i++){
             gnomos.Todoslosgnomos[i].moverGnomo();
@@ -485,8 +477,9 @@ public class Juego extends InterfaceJuego {
         queGnomoFueEliminado(this.gnomos.Todoslosgnomos);
         //Muestra los datos del juego en la parte superior
         Marcadores();
-
         PepCondicion();
+        this.fuego.crearBolaDeFuego(pep);
+       
     }
 
     public static void main(String[] args) {

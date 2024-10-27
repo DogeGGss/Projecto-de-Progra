@@ -12,7 +12,7 @@ public class ConjuntoIslas {
    final int altoIsla;
    final int espaciadoHorizontal = 200;
    final int espaciadoVertical = 150;
-   Image fondo=Toolkit.getDefaultToolkit().getImage("C:\\Users\\destr\\Desktop\\Tarea progra\\Projecto-de-Progra\\ProyectoLimpio\\Fondo.png");
+   Image fondo=Toolkit.getDefaultToolkit().getImage("Fondo.png");
    Image fondo2=Toolkit.getDefaultToolkit().getImage("Nubes png gif.gif");
    Image casita=Toolkit.getDefaultToolkit().getImage("casa.png");
    
