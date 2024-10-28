@@ -12,7 +12,7 @@ public class Pep {
     private double escala;   // Escala para dibujar la imagen de Pep
     public double velocidad = 5; // Velocidad de movimiento de Pep
     public boolean enElAire = true; // Variable para verificar si Pep está en el aire
-    private final double FUERZA_SALTO = 3; // Fuerza del salto
+    private final double FUERZA_SALTO = 15; // Fuerza del salto
     private double velocidadVertical = 0; // Velocidad vertical de Pep
     private Image imagen1; // Imagen de Pep mirando a la derecha
     private Image imagen2; // Imagen de Pep mirando a la izquierda
@@ -20,9 +20,10 @@ public class Pep {
     public boolean direccion; // True si Pep mira a la derecha, false si a la izquierda
     private Entorno entorno; // Referencia al entorno de juego
     public boolean colision=false;
-    public double GRAVEDAD=0.2;
+    public double GRAVEDAD=0.5;
     public int contadorDeTiempo;
     public boolean finDelJuego=false;
+    private static final float MAX_VELOCIDAD_VERTICAL = 3.0f; // Limita la velocidad vertical
 
     // Constructor de la clase Pep
     public Pep(double xInicial, double yInicial, double angulo, double escala, Entorno entorno) {
@@ -66,27 +67,40 @@ public void mover() {
     if (entorno.sePresiono('w') && !enElAire) { // Asegúrate de que no esté en el aire
         velocidadVertical = -FUERZA_SALTO; // Aplica la fuerza hacia arriba
         enElAire = true; // Marca que está en el aire
-        colision = false;
     }
 
-    aplicarGravedad();  // Aplicar gravedad a Pep
+    aplicarGravedad(); // Aplicar gravedad a Pep
 
-    // Actualiza la posición en Y utilizando velocidadVertical
+    // Mueve a Pep verticalmente
     yInicial += velocidadVertical;
 
-    // Comprueba si hay colisión al caer
+
+
     if (colision) {
-        enElAire = false; // Si hay colisión, no está en el aire
-        velocidadVertical = 0; // Resetea la velocidad vertical al aterrizar
+        // Si hay colisión, ajusta la posición de Pep para que no atraviese la isla
+        if (velocidadVertical > 0) { // Si Pep está cayendo
+            enElAire = false; // Ya no está en el aire
+            velocidadVertical = 0; // Resetea la velocidad vertical al aterrizar
+            // por ejemplo: yInicial = yIsla + altoIsla; // Ajusta según la colisión
+        }
+    } else {
+        // Si no hay colisión y está en el aire, aplica gravedad
+        enElAire = true;
     }
 }
 
 // Método para aplicar gravedad
 public void aplicarGravedad() {
-    // aplica la gravedad
-    this.yInicial += this.GRAVEDAD; 
-     
-}   
+    if (enElAire) {
+        // Aplica la gravedad a la velocidad vertical (debe ser negativa)
+        velocidadVertical += GRAVEDAD; 
+        
+        // Limitar la velocidad vertical máxima para evitar que sea demasiado grande
+        if (velocidadVertical > MAX_VELOCIDAD_VERTICAL) {
+            velocidadVertical = MAX_VELOCIDAD_VERTICAL;
+  }
+ }
+}
 
 
     //getters y setters 

@@ -15,7 +15,7 @@ public class ConjuntoDePoder {
     }
 
     public void crearBolaDeFuego(Pep pep){
-        if(entorno.estaPresionada('c')&& poderDeFuego[0]==null){
+        if(entorno.sePresiono('c')&& poderDeFuego[0]==null){
             this.xInicial=pep.getXInicial()+pep.getAnchoPep();
             this.yInicial=pep.getY();
             poderDeFuego[0]= new Boladefuego(xInicial, yInicial, entorno, pep.direccion);

@@ -168,23 +168,28 @@ public class Juego extends InterfaceJuego {
         double yPep = pep.getY();
         int anchoPep = pep.getAnchoPep();
         int altoPep = pep.getAltura();
-        int Margen = 3;
+        int margen = 3; // Considera reducir este margen si causa problemas de detección
     
         for (int i = 0; i < miMapa.islas.length; i++) {
             int xIsla = miMapa.islas[i].getxInicial();
             int yIsla = miMapa.islas[i].getyInicial();
             int anchoIsla = miMapa.islas[i].getAnchoIsla();
             int altoIsla = miMapa.islas[i].getAltoIsla();
+    
+            // Ajustamos el cálculo de la colisión en X
+            boolean colisionX = (xPep + anchoPep / 2 > xIsla - anchoIsla / 2 - margen) && 
+                                 (xPep - anchoPep / 2 < xIsla + anchoIsla / 2 + margen);
             
-            boolean colisionX = (xPep + anchoPep / 2 + Margen > xIsla - anchoIsla / 2) && (xPep - anchoPep / 2 - Margen < xIsla + anchoIsla / 2);
-            boolean colisionY =  (yPep + altoPep > yIsla) && (yPep < yIsla + altoIsla) && (pep.getY() + altoPep <= yIsla +1);
-
+            // Revisa que el personaje esté justo sobre la isla y en el rango vertical
+            boolean colisionY = (yPep + altoPep > yIsla) && (yPep < yIsla + altoIsla);
+            
+            // Cambia la condición para verificar que el personaje está por encima de la isla
             if (colisionX && colisionY) {
-                return true;
+                return true; // Colisión detectada
             }
         }
-        return false;
-    }
+        return false; // No hay colisión
+        }
     
     private void VerificarColision() {
         if (ColisionaPep()) {
