@@ -40,36 +40,42 @@ public class Gnomos {
     
     public void dibujarEseGnomo(double x,double y){
         if(colision){
-        if(direccion){
-            this.imagenInicial=imagen1;
-        } else {
+            if(direccion){
+                this.imagenInicial=imagen1;
+            } else {
             this.imagenInicial=imagen2;
-        }
-    }  else {
-        this.imagenInicial=imagen1;
+         }
+        }  else {
+            this.imagenInicial=imagen1;
     }
         
         entorno.dibujarImagen(imagenInicial,x,y,0,escala);
     }
 
     public void moverGnomo() {
-             // Movimiento continuo del gnomo
-           
-        if (direccion) {
-            xInicial += velocidad; // Movimiento a la derecha
-        } else {
-            xInicial -= velocidad; // Movimiento a la izquierda
-        }
+        // Movimiento continuo del gnomo
     
-        // Solo cambia de dirección si hay una colisión
-        if (!colision) {
-            Random rand = new Random();
-             boolean n = rand.nextBoolean();
-            direccion = n; // Cambia la dirección
+        // Solo permite mover si está en el suelo
+        if (colision) {
+            if (direccion) {
+                xInicial += velocidad; // Movimiento a la derecha
+            } else {
+                xInicial -= velocidad; // Movimiento a la izquierda
+            }
+    
+            // Solo cambia de dirección si hay una colisión
+        }else  {
+                Random rand = new Random();
+                boolean n = rand.nextBoolean();
+                direccion = n; // Cambia la dirección
+            }
+            aplicarGravedadGnomos(); // Aplicar gravedad en cada tick
         }
-        aplicarGravedadGnomos(); // Aplicar gravedad en cada tick
-}
+       
         
+    
+
+    
         
         public void aplicarGravedadGnomos() {
             this.yInicial += this.gravedad; 

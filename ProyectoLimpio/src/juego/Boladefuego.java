@@ -45,9 +45,9 @@ public class Boladefuego {
     
     public void moverBola() {   
         if (direccion) {
-            xInicial += velocidad; // Movimiento a la derecha
+            xInicial += velocidad*2; // Movimiento a la derecha
         } else {
-            xInicial -= velocidad; // Movimiento a la izquierda
+            xInicial -= velocidad*2; // Movimiento a la izquierda
         }
     }
 

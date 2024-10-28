@@ -181,7 +181,7 @@ public class Juego extends InterfaceJuego {
                                  (xPep - anchoPep / 2 < xIsla + anchoIsla / 2 + margen);
             
             // Revisa que el personaje esté justo sobre la isla y en el rango vertical
-            boolean colisionY = (yPep + altoPep > yIsla) && (yPep < yIsla + altoIsla);
+            boolean colisionY = (yPep + altoPep / 2 + margen > yIsla - altoIsla / 2) && (yPep - altoPep / 2 - margen < yIsla + altoIsla / 2);
             
             // Cambia la condición para verificar que el personaje está por encima de la isla
             if (colisionX && colisionY) {
@@ -199,7 +199,7 @@ public class Juego extends InterfaceJuego {
         } else {
             // Si no está en colisión, se aplica gravedad y se establece colision=false
             pep.colision = false;
-            pep.GRAVEDAD = 2.3;    
+            pep.GRAVEDAD = 2;    
         }
     }
     

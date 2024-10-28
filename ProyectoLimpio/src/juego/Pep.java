@@ -12,7 +12,7 @@ public class Pep {
     private double escala;   // Escala para dibujar la imagen de Pep
     public double velocidad = 5; // Velocidad de movimiento de Pep
     public boolean enElAire = true; // Variable para verificar si Pep está en el aire
-    private final double FUERZA_SALTO = 15; // Fuerza del salto
+    private final double FUERZA_SALTO = 10; // Fuerza del salto
     private double velocidadVertical = 0; // Velocidad vertical de Pep
     private Image imagen1; // Imagen de Pep mirando a la derecha
     private Image imagen2; // Imagen de Pep mirando a la izquierda
@@ -20,10 +20,10 @@ public class Pep {
     public boolean direccion; // True si Pep mira a la derecha, false si a la izquierda
     private Entorno entorno; // Referencia al entorno de juego
     public boolean colision=false;
-    public double GRAVEDAD=0.5;
+    public double GRAVEDAD=3;   
     public int contadorDeTiempo;
     public boolean finDelJuego=false;
-    private static final float MAX_VELOCIDAD_VERTICAL = 3.0f; // Limita la velocidad vertical
+    private static final float MAX_VELOCIDAD_VERTICAL = 5.0f; // Limita la velocidad vertical
 
     // Constructor de la clase Pep
     public Pep(double xInicial, double yInicial, double angulo, double escala, Entorno entorno) {
@@ -69,7 +69,6 @@ public void mover() {
         enElAire = true; // Marca que está en el aire
     }
 
-    aplicarGravedad(); // Aplicar gravedad a Pep
 
     // Mueve a Pep verticalmente
     yInicial += velocidadVertical;
@@ -85,6 +84,7 @@ public void mover() {
         }
     } else {
         // Si no hay colisión y está en el aire, aplica gravedad
+        aplicarGravedad(); 
         enElAire = true;
     }
 }
