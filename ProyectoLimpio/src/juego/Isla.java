@@ -9,16 +9,13 @@ import java.awt.Toolkit;
 public class Isla {
     final int xInicial;
     final int xCentro;
-
-
     final int yInicial;
     final int anchoIsla;
     final int altoIsla;
-
     final Entorno entorno;
     final Image imagen;
 
-
+    //constructor
     public Isla(int xInicial, int yInicial, int ancho, int alto, Entorno entorno) {
         this.xInicial=xInicial;
         this.anchoIsla = ancho;
@@ -29,6 +26,7 @@ public class Isla {
         this.imagen = Toolkit.getDefaultToolkit().getImage("Plataformas.png");
        
     }
+    //getters y setters
     public int getxInicial() {
         return xInicial;
     }
@@ -49,12 +47,7 @@ public class Isla {
         return yInicial;
     }
 
-
-
     public Image getImagen() {
         return imagen;
-    }
-
-
-   
+    }   
 }

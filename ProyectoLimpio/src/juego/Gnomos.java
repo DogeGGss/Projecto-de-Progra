@@ -18,12 +18,9 @@ public class Gnomos {
     private Entorno entorno; // Referencia al entorno de juego
     public boolean colision;//true si esta sobre una plataforma, false sino
     public boolean enElAire;
-    public int tiempoInicial;
     public double gravedad;
 
-
-    
-    
+    //constructor
     public Gnomos(double xInicial,double yInicial,double escala,Entorno entorno){
     this.xInicial=xInicial;
     this.yInicial=yInicial;
@@ -38,6 +35,7 @@ public class Gnomos {
     this.direccion=direccionboolean;
     }
     
+    //dibuja al gnomo segun la direccion aleatoria elegida previamente
     public void dibujarEseGnomo(double x,double y){
         if(colision){
             if(direccion){
@@ -52,10 +50,9 @@ public class Gnomos {
         entorno.dibujarImagen(imagenInicial,x,y,0,escala);
     }
 
+    // Movimiento continuo del gnomo
     public void moverGnomo() {
-        // Movimiento continuo del gnomo
-    
-        // Solo permite mover si está en el suelo
+        // Solo permite mover si está en la isla
         if (colision) {
             if (direccion) {
                 xInicial += velocidad; // Movimiento a la derecha
@@ -72,16 +69,12 @@ public class Gnomos {
             aplicarGravedadGnomos(); // Aplicar gravedad en cada tick
         }
        
-        
-    
+    //baja constrantemente al gnomo en el eje y
+    public void aplicarGravedadGnomos() {
+        this.yInicial += this.gravedad; 
+    }   
 
-    
-        
-        public void aplicarGravedadGnomos() {
-            this.yInicial += this.gravedad; 
-        }   
-
-         //getters y setters 
+     //getters y setters 
     public double getxInicial() {
         return xInicial;
     }

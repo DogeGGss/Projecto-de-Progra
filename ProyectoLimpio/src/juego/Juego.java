@@ -18,13 +18,14 @@ public class Juego extends InterfaceJuego {
 
     Juego() {
         this.entorno = new Entorno(this, "Proyecto para TP", 1920, 1080);
-
+        //caracteristicas de las islas
         int cantIslas = 1;
-        int ancho = 150; // Aumenta el ancho de la isla
-        int alto = 50;   // Puedes ajustar el alto si es necesario
+        int ancho = 150; 
+        int alto = 50;   
         int cantidadFilas = 5;
+        //posicion de aparicion de pep
         double xInicialPep = 590;
-        double yInicialPep = 657.5; // Ajusta esta posición según sea necesario
+        double yInicialPep = 657.5; 
         double anguloPep = 0;      
         double escalaPep = 0.3;  
        
@@ -41,13 +42,15 @@ public class Juego extends InterfaceJuego {
 
         // Creamos el objeto conjunto de islas
         this.miMapa = new ConjuntoIslas(islaCompleto2, entorno, cantidadFilas, ancho, alto);
+
        //Se crea el conjunto de gnomos
         this.gnomos= new Conjuntognomos(entorno);
+
         //conjunto de tortugas
         this.tortugas=new Conjuntotortugas(entorno);
 
-        //creamos el array con 1 solo espacio, para que solo se tire el poder de a una vez
-        
+   
+        //conjunto de bolas de fuego
         this.fuego=new ConjuntoDePoder(entorno);
 
         //inicia el juego!
@@ -56,8 +59,9 @@ public class Juego extends InterfaceJuego {
 
     //funciones declaradas dentro de la clase juego
 
-    //detecta si la tortuga colisiona con una isla y tambien si detecta con los bordes de la misma
+    //detecta si la tortuga colisiona con una isla
     private boolean colisionTortugas(Tortugas tortuga){
+
         //obtiene las dimenciones de la tortuga
         double xTortuga = tortuga.getxInicial();
         double yTortuga = tortuga.getyInicial();
@@ -78,15 +82,6 @@ public class Juego extends InterfaceJuego {
             boolean colisionX = (xTortuga + anchoTortuga / 2 + Margen > xIsla - anchoIsla / 2) && (xTortuga - anchoTortuga / 2 - Margen < xIsla + anchoIsla / 2);
             boolean colisionY =  (yTortuga + altoTortuga > yIsla) && (yTortuga < yIsla + altoIsla) && (yTortuga + altoTortuga <= yIsla +1);
 
-            //detecta si la tortuga toca los extremos de la isla
-            boolean colisionConLaterales=(xTortuga + anchoTortuga / 2  == xIsla + anchoIsla / 2) || (xTortuga - anchoTortuga / 2== xIsla - anchoIsla / 2);
-            
-            //si toca el lateral entonces se activa la colisionLateral. Dentro del objeto tortuga se cambia su direccion debido a esta variable de instancia
-            if(colisionConLaterales){
-                tortuga.colisionLateral=true;
-            } else {
-                tortuga.colisionLateral=false;
-            }
             //retorna si colisiona con la isla debidamente 
             if (colisionX && colisionY) {
                 return true;
@@ -109,7 +104,8 @@ public class Juego extends InterfaceJuego {
         
         //recorre el array de islas
         for (int i = 0; i < miMapa.islas.length; i++) {
-            //calcula su dimencion en x
+
+            //calcula la dimencion de la isla en x
             int xIsla = miMapa.islas[i].getxInicial();
             int anchoIsla = miMapa.islas[i].getAnchoIsla();
             
@@ -130,11 +126,14 @@ public class Juego extends InterfaceJuego {
 
     //verifica la colision con la isla y con los bordes de la misma
     private void verificarColisionesTortugas(Tortugas[] tortuga){
+
         //recorre el array de tortugas para analizar cada caso en particular
         for(int i=0; i<tortuga.length;i++){
+
             //si colisiona con la isla y con su extremo
             if(colisionTortugas(tortuga[i])&&colisionTortugasLateral(tortuga[i])){
-                //deja de bajar en el eje y la tortuga
+
+                //deja de bajar en el eje "y" la tortuga
                 tortuga[i].setGravedad(0);
                 //la colision se activa
                 tortuga[i].colision=true;
@@ -149,6 +148,7 @@ public class Juego extends InterfaceJuego {
                 //se activa la colision lateral 
                 tortuga[i].setColisionLateral(true);
                 
+                //si solamente la tortuga esta sobre la isla
             } else if(colisionTortugas(tortuga[i])) {
                 tortuga[i].setGravedad(0);
                 tortuga[i].colision=true;
@@ -163,27 +163,30 @@ public class Juego extends InterfaceJuego {
         }
     }
 
+
+    //devuelve un boolean segun si Pep esta sobre una isla o no
     private boolean ColisionaPep() {
+        //dimenciones de Pep
         double xPep = pep.getXInicial();
         double yPep = pep.getY();
         int anchoPep = pep.getAnchoPep();
         int altoPep = pep.getAltura();
-        int margen = 3; // Considera reducir este margen si causa problemas de detección
-    
+        //margen de error
+        int margen = 3; 
+        
+        //recorre el array de islas
         for (int i = 0; i < miMapa.islas.length; i++) {
+
+            //dimencion de la isla a analizar
             int xIsla = miMapa.islas[i].getxInicial();
             int yIsla = miMapa.islas[i].getyInicial();
             int anchoIsla = miMapa.islas[i].getAnchoIsla();
             int altoIsla = miMapa.islas[i].getAltoIsla();
     
-            // Ajustamos el cálculo de la colisión en X
-            boolean colisionX = (xPep + anchoPep / 2 > xIsla - anchoIsla / 2 - margen) && 
-                                 (xPep - anchoPep / 2 < xIsla + anchoIsla / 2 + margen);
-            
-            // Revisa que el personaje esté justo sobre la isla y en el rango vertical
+            // calculamos que la colision en "x" y en "y" sean verdaderas
+            boolean colisionX = (xPep + anchoPep / 2 > xIsla - anchoIsla / 2 - margen) &&  (xPep - anchoPep / 2 < xIsla + anchoIsla / 2 + margen);
             boolean colisionY = (yPep + altoPep / 2 + margen > yIsla - altoIsla / 2) && (yPep - altoPep / 2 - margen < yIsla + altoIsla / 2);
             
-            // Cambia la condición para verificar que el personaje está por encima de la isla
             if (colisionX && colisionY) {
                 return true; // Colisión detectada
             }
@@ -191,6 +194,7 @@ public class Juego extends InterfaceJuego {
         return false; // No hay colisión
         }
     
+    //Pregunta si Pep esta sobre la isla, segun sea la respuesta, ajusta la gravedad
     private void VerificarColision() {
         if (ColisionaPep()) {
             // Si detecta colisión, establecemos colision=true y apagamos la gravedad
@@ -211,60 +215,75 @@ public class Juego extends InterfaceJuego {
     
         double bordeIzquierdoPep = xPep - anchoPep / 2;
         double bordeDerechoPep = xPep + anchoPep / 2;
+
+        //segun la resolucion de la pantalla
         if(bordeIzquierdoPep<0){
-            pep.setXInicial((int)anchoPep/2 + 1);
+            pep.setXInicial((int)anchoPep/2 + 1); //se hace un mini tp imperceptible para el ojo humano, para que no entre en un ciclo infinito
         } else if(bordeDerechoPep>1920){
-            pep.setXInicial(1810+(int)anchoPep/2);
+            pep.setXInicial(1810+(int)anchoPep/2);//se hace un mini tp imperceptible para el ojo humano, para que no entre en un ciclo infinito
         }
     }
-    //verifica si un gnomo especifico se encuentra sobre una
+
+    //verifica si un gnomo especifico se encuentra sobre una isla
     private boolean ColisionesGnomos(Gnomos gnomo){
+        //dimenciones del gnomo
         double xGnomo = gnomo.getxInicial();
         double yGnomo = gnomo.getyInicial();
         int anchoGnomo = gnomo.getAncho();
         int altoGnomo = gnomo.getAltura();
         int Margen = 3;
-    
+        
+        //recorre el array de islas
         for (int i = 0; i < miMapa.islas.length; i++) {
             int xIsla = miMapa.islas[i].getxInicial();
             int yIsla = miMapa.islas[i].getyInicial();
             int anchoIsla = miMapa.islas[i].getAnchoIsla();
             int altoIsla = miMapa.islas[i].getAltoIsla();
             
+            //verifica que la colision en "x" y en "y" sean verdaderas a la vez
             boolean colisionX = (xGnomo + anchoGnomo / 2 + Margen > xIsla - anchoIsla / 2) && (xGnomo - anchoGnomo / 2 - Margen < xIsla + anchoIsla / 2);
             boolean colisionY =  (yGnomo + altoGnomo > yIsla) && (yGnomo < yIsla + altoIsla) && (yGnomo + altoGnomo <= yIsla +1);
 
+            //retorna el resultado
             if (colisionX && colisionY) {
                 return true;
             }
         }
         return false;
     }
-    //si hay colision el gnomo se para sobre la plataforma, en caso contrario cae por la fuerza de gravedad
+
+    //si hay colision el gnomo se para sobre la plataforma, en caso contrario se cae por la fuerza de gravedad
     private void verificarColisionesGnomos(Gnomos[] gnomo){
+        //analiza el caso particular de cada gnomo
         for(int i=0; i<gnomo.length;i++){
             if (ColisionesGnomos(gnomo[i])){
+                //si esta sobre la isla, se desactiva la gravedad y se activa la colision
                 gnomo[i].setGravedad(0);
                 gnomo[i].colision=true;  
             } else {
+                //sino, se vuelve a aplicar la gravedad y la colision se desactiva
                 gnomo[i].setGravedad(2);
                 gnomo[i].colision=false;
             }
         }
     }
 
+    //verifica si Pep colisiona con una Tortuga
     private boolean PepConTortuga(Tortugas[] tortuga) {
+
         // Dimensiones de Pep
         double xPep = pep.getXInicial();
         double anchoPep = pep.getAnchoPep();
         double yPep = pep.getY();
         double altoPep = pep.getAltura();
-    
+        
+        //bordes de Pep
         double bordeIzquierdoPep = xPep - anchoPep / 2;
         double bordeDerechoPep = xPep + anchoPep / 2;
         double cabezaPep = yPep - altoPep / 2;
         double piesPep = yPep + altoPep / 2;
-    
+
+        //recorre el array de tortugas
         for (int i = 0; i < tortuga.length; i++) {
             // Dimensiones de la tortuga
             double xTortuga = tortuga[i].getxInicial();
@@ -272,7 +291,7 @@ public class Juego extends InterfaceJuego {
             double yTortuga = tortuga[i].getyInicial();
             double altoTortuga = tortuga[i].getAltura();
     
-            // Bordes de la tortuga en x
+            // Bordes de la tortuga
             double bordeIzquierdoTortuga = xTortuga - anchoTortuga / 2;
             double bordeDerechoTortuga = xTortuga + anchoTortuga / 2;
             double cabezaTortuga = yTortuga - altoTortuga / 2;
@@ -289,31 +308,36 @@ public class Juego extends InterfaceJuego {
         return false; // No hay colisión
     }
 
+    //verifica si el gnomo fue colisionado por Pep, por una tortuga o se tiró al vacio
     private void queGnomoFueEliminado(Gnomos[] gnomo) {
+        //analiza cada caso
         for (int i = 0; i < gnomo.length; i++) {
-            // Verifica si el gnomo colisiona con Pep
+            // Verifica si el gnomo colisiona con Pep en las ultimas 2 filas de islas
             if (GnomosSalvado(gnomo[i]) && gnomo[i].getyInicial() > 500) {
-                this.gnomos.contadorGnomosSalvados++;
-                gnomo[i]=null;
+                this.gnomos.contadorGnomosSalvados++; //aumenta el marcadores 
+                gnomo[i]=null;// Establece el gnomo como null
             }
     
             // Verifica si el gnomo fue eliminado
             if (GnomoEliminado(gnomo[i]) || gnomo[i].getyInicial()>1080) {
-                this.gnomos.contadorGnomosEliminados++;
+                this.gnomos.contadorGnomosEliminados++;//aumenta el marcadores 
                 gnomo[i] = null; // Establece el gnomo como null
             }
         }
     }
 
+    //devuelve un boolean si la bola de fuego tocó un borde
     private boolean bolaDeFuegoTocaBorde(Boladefuego bolaDeFuego) {
                 // Verifica si la bola de fuego está fuera de los límites laterales de la pantalla
                 if (bolaDeFuego.getxInicial() < 0 || bolaDeFuego.getxInicial() > 1900) { // 1900 es el ancho de la pantalla
-                    return true; // Establece la bola de fuego como null
+                    return true; 
                 }        
         return false;
     }
 
+    //verifica si es que la bola de fuego tocó alguna tortuga
     private boolean bolaDeFuegoColisionTortuga(Boladefuego bolaDeFuego){
+
             //dimenciones de la bola de fuego
             double xBolaDeFuego =bolaDeFuego.getxInicial();
             double anchoBolaDeFuego = bolaDeFuego.getAncho();
@@ -325,7 +349,9 @@ public class Juego extends InterfaceJuego {
             double cabezaBolaDeFuego= yBolaDeFuego - altoBolaDeFuego / 2;
             double piesBolaDeFuego= yBolaDeFuego + altoBolaDeFuego / 2;
 
+        //analiza en cada caso a las tortugas
         for (int i = 0; i < this.tortugas.conjunTortugas.length; i++) {
+
             // Dimensiones de la tortuga
             double xTortuga = this.tortugas.conjunTortugas[i].getxInicial();
             double anchoTortuga = this.tortugas.conjunTortugas[i].getAncho();
@@ -344,7 +370,7 @@ public class Juego extends InterfaceJuego {
             cabezaBolaDeFuego> piesTortuga || 
             piesBolaDeFuego < cabezaTortuga)) {
                 this.tortugas.conjunTortugas[i]=null; //elimina la tortuga que fue colisionada por el poder del sol
-                this.tortugas.contadorEnemigosEliminados++;
+                this.tortugas.contadorEnemigosEliminados++; //aumenta el marcador 
                 return true; // Hay colisión
             }
         }
@@ -352,6 +378,7 @@ public class Juego extends InterfaceJuego {
 
     }
 
+    //si la bola de fuego existe, analiza si fue colisionada por el borde o una tortuga, si fue asi la vuelve null
     private void bolaDeFuegoColisioes(Boladefuego[] bolasDeFuego){
         for (int i = 0; i < bolasDeFuego.length; i++) {
             if (bolasDeFuego[i] != null) {
@@ -363,7 +390,7 @@ public class Juego extends InterfaceJuego {
     }
 
 
-    // Verifica si el gnomo colisiona con una tortuga
+    // Verifica si el gnomo colisionó con una tortuga
     private boolean GnomoEliminado(Gnomos gnomo) {
         // Dimensiones del gnomo
         double xGnomo = gnomo.getxInicial();
@@ -381,7 +408,7 @@ public class Juego extends InterfaceJuego {
         for (int i = 0; i < this.tortugas.conjunTortugas.length; i++) {
             Tortugas tortuga = this.tortugas.conjunTortugas[i];
     
-            // Si la tortuga no está presente, continúa
+            // Si la tortuga no está presente, continúa con la siguiente tortuga en el array
             if (tortuga == null) {
                 continue;
             }
@@ -410,8 +437,9 @@ public class Juego extends InterfaceJuego {
     }
     
 
- //dice si el gnomo colisiona con pep
+     //dice si el gnomo colisiona con pep
      private boolean GnomosSalvado(Gnomos gnomo){
+
          // Dimensiones de Pep
          double xPep = pep.getXInicial();
          double anchoPep = pep.getAnchoPep();
@@ -447,8 +475,7 @@ public class Juego extends InterfaceJuego {
  
     //que pasa segun con que colisione pep
     private boolean PepSeMuere(){
-        
-        if(PepConTortuga(this.tortugas.conjunTortugas) || pep.getY()>1080 || this.gnomos.contadorGnomosEliminados==8){
+        if(PepConTortuga(this.tortugas.conjunTortugas) || pep.getY()>1080 || this.gnomos.contadorGnomosEliminados==30){
             return true;    
         }
         return false;
@@ -461,6 +488,13 @@ public class Juego extends InterfaceJuego {
         if(pep.finDelJuego){
             entorno.dibujarImagen(Toolkit.getDefaultToolkit().getImage("Derrota.jpg"), 960, 530, 0, 2);
         }
+        if(this.gnomos.contadorGnomosSalvados==1){
+            pep.ganoElJuego=true;
+        }
+        if(pep.ganoElJuego){
+            entorno.dibujarImagen(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\victoria3.jpg"), 960, 530, 0, 1.8);
+        }
+
     }
 
 

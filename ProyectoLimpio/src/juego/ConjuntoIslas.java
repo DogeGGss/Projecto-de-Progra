@@ -16,18 +16,6 @@ public class ConjuntoIslas {
    Image fondo2=Toolkit.getDefaultToolkit().getImage("Nubes png gif.gif");
    Image casita=Toolkit.getDefaultToolkit().getImage("casa.png");
    
-
-   public Image getFondo() {
-    return fondo;
-}
-public Image getFondo2() {
-    return fondo2;
-}
-
-   public Image getCasita(){
-    return casita;
-   }
-
 public ConjuntoIslas(Isla[] islas, Entorno entorno, int cantidadFilas, int anchoIsla, int altoIsla){
     this.islas=islas;
     this.entorno=entorno;
@@ -49,7 +37,7 @@ private void dibujarFila(int fila, int k) {
         return;
     }
 
-    // Calcular el número de islas en la fila actual (decreciente)
+    // Calcular el número de islas en la fila actual 
     int numIslasEnFila = this.cantidadFilas - fila;
 
     for (int j = 0; j < numIslasEnFila; j++) {
@@ -63,12 +51,26 @@ private void dibujarFila(int fila, int k) {
         k++; // Incrementa el índice k para la próxima isla
     }
 
-    // Llama a la función recursiva para la siguiente fila, pasando el índice k actualizado
+    // Llama a la función recursivamente para la siguiente fila, pasando el índice k actualizado
     dibujarFila(fila + 1, k);
 }
+
+//dibuja el fondo
 public void dibujarFondo() {
     entorno.dibujarImagen(getFondo(), 960, 530, 0, 12); 
     entorno.dibujarImagen(getFondo2(), 960, 530, 0, 4);
 }
+//getters y setters
+public Image getFondo() {
+    return fondo;
+}
+public Image getFondo2() {
+    return fondo2;
+}
+
+   public Image getCasita(){
+    return casita;
+   }
+
 
 }

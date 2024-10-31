@@ -20,9 +20,9 @@ public class Pep {
     public boolean direccion; // True si Pep mira a la derecha, false si a la izquierda
     private Entorno entorno; // Referencia al entorno de juego
     public boolean colision=false;
-    public double GRAVEDAD=3;   
-    public int contadorDeTiempo;
+    public double GRAVEDAD=0.5;
     public boolean finDelJuego=false;
+    public boolean ganoElJuego=false;
     private static final float MAX_VELOCIDAD_VERTICAL = 5.0f; // Limita la velocidad vertical
 
     // Constructor de la clase Pep
@@ -41,7 +41,8 @@ public class Pep {
 
         this.direccion = true; // Inicializa la dirección de Pep mirando a la derecha
     }
-    // Método para dibujar a Pep en el entorno
+
+    // Método para dibujar a Pep en el entorno segun sea su direccion
     public void dibujar() {
         if (direccion) {
             entorno.dibujarImagen(imagen1, xInicial, yInicial, 0, escala); // Dibuja imagen mirando a la derecha
@@ -69,6 +70,7 @@ public void mover() {
         enElAire = true; // Marca que está en el aire
     }
 
+    aplicarGravedad(); // Aplicar gravedad a Pep
 
     // Mueve a Pep verticalmente
     yInicial += velocidadVertical;
@@ -80,11 +82,9 @@ public void mover() {
         if (velocidadVertical > 0) { // Si Pep está cayendo
             enElAire = false; // Ya no está en el aire
             velocidadVertical = 0; // Resetea la velocidad vertical al aterrizar
-            // por ejemplo: yInicial = yIsla + altoIsla; // Ajusta según la colisión
         }
     } else {
         // Si no hay colisión y está en el aire, aplica gravedad
-        aplicarGravedad(); 
         enElAire = true;
     }
 }
