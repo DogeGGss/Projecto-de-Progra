@@ -3,6 +3,7 @@ package juego;
 import java.awt.Image;
 import entorno.Entorno;
 import java.awt.Toolkit;
+import java.util.Random;
 
 public class Conjuntotortugas {
     Tortugas[] conjunTortugas= new Tortugas[4];
@@ -15,22 +16,23 @@ public class Conjuntotortugas {
         
      }
  
+     //genera una posicion aleatoria
+     public static int generarPosicionXAleatoria() {
+        Random rand = new Random();
+        if (rand.nextBoolean()) { // Elige aleatoriamente entre los dos rangos (NO TIRA NUMEROS QUE SEAN EN LA ISLA DE LA CASITA)
+            return rand.nextInt(684) + 127; // Rango [127, 810]
+        } else {
+            return rand.nextInt(671) + 1110; // Rango [1110, 1780]
+        }
+    }
+
+    //si la tortuga es nula, entonces la dibuja
      public void dibujarTortugas() {
         int totalTortugas = conjunTortugas.length;
-        int maxPorLado = 2; // Número de tortugas por lado
-    
         for (int i = 0; i < totalTortugas; i++) {
             if (this.conjunTortugas[i] == null) {
-                double x;
-                double y = 100; // Puedes ajustar la posición vertical según lo necesites
-    
-                // Calcular la posición x en función de la posición de la tortuga
-                if (i < maxPorLado) {
-                    x = 450 + i * 150; // Tortugas a la derecha
-                } else {
-                    x = 1460 - (i - maxPorLado) * 150; // Tortugas a la izquierda
-                }
-    
+                int x =  generarPosicionXAleatoria();
+                int y = -350; 
                 this.conjunTortugas[i] = new Tortugas(x, y, 0.3, entorno);
             }
             this.conjunTortugas[i].dibujarEsaTortuga(conjunTortugas[i].getxInicial(), conjunTortugas[i].getyInicial());
