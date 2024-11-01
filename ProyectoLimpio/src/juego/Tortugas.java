@@ -17,14 +17,11 @@ public class Tortugas {
     public boolean direccion; // True la tortuga mira a la derecha, false si a la izquierda
     private Entorno entorno; // Referencia al entorno de juego
     public boolean colisionLateral=false;//true si esta sobre una plataforma, false sino
-    public boolean flag;
-    public boolean enElAire;
-    public int tiempoInicial;
     public double gravedad;
     public boolean colision;
 
 
-
+    //constructor de la Tortuga
     public Tortugas(double xInicial,double yInicial,double escala,Entorno entorno){
         this.xInicial=xInicial;
         this.yInicial=yInicial;
@@ -40,6 +37,7 @@ public class Tortugas {
 
     }
 
+    //dibuja la tortuga mirando hacia donde se decidió de forma aleatoria
     public void dibujarEsaTortuga(double x,double y){
         if(direccion){
             this.imagenInicial=imagen1;
@@ -49,31 +47,29 @@ public class Tortugas {
         entorno.dibujarImagen(imagenInicial,x,y,0,escala);
     }
 
+    // Movimiento continuo del gnomo
     public void moverTortuga() {
-        // Movimiento continuo del gnomo
     if(colision){
         if (direccion) {
             xInicial += velocidad; // Movimiento a la derecha
         } else {
             xInicial -= velocidad; // Movimiento a la izquierda
         }
+        //si hay colision con un borde de isla cambia su direccion
         if(colisionLateral){
             direccion=!direccion;
            }
-    }
-   
-  
-   
+    } 
    aplicarGravedad();// Aplicar gravedad en cada tick
 }
    
-   
+//baja en y a la tortuga de forma constante
 public void aplicarGravedad() {
-    // aplica la gravedad
     this.yInicial += this.gravedad; 
-
 }   
 
+
+//getters y setters
 public double getxInicial() {
     return xInicial;
 }
@@ -161,30 +157,6 @@ public boolean isColisionLateral() {
 public void setColisionLateral(boolean colisionLateral) {
     this.colisionLateral = colisionLateral;
 }
-
-public boolean isFlag() {
-    return flag;
-}
-
-public void setFlag(boolean flag) {
-    this.flag = flag;
-}
-
-public boolean isEnElAire() {
-    return enElAire;
-}
-
-public void setEnElAire(boolean enElAire) {
-    this.enElAire = enElAire;
-}
-
-public int getTiempoInicial() {
-    return tiempoInicial;
-}
-
-public void setTiempoInicial(int tiempoInicial) {
-    this.tiempoInicial = tiempoInicial;
-}   
 
 public double getGravedad() {
     return gravedad;

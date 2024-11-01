@@ -22,7 +22,7 @@ public class Conjuntognomos {
         for (int i = 0; i < Todoslosgnomos.length; i++) {
             if (this.Todoslosgnomos[i] == null) {
                 double x = 1920/2; 
-                double y = 30;          
+                double y = 20;          
                 this.Todoslosgnomos[i] = new Gnomos(x, y, 0.4, entorno);
             }
             this.Todoslosgnomos[i].dibujarEseGnomo(Todoslosgnomos[i].getxInicial(), Todoslosgnomos[i].getyInicial());
