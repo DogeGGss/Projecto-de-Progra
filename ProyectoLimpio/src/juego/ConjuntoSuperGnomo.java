@@ -1,9 +1,6 @@
 package juego;
 
-import java.awt.Image;
 import entorno.Entorno;
-import java.awt.Toolkit;
-import java.util.Random;
 
 public class ConjuntoSuperGnomo {
     SuperGnomo[] ElSuperGnomo= new SuperGnomo[1];  //1 super gnomo en pantalla
@@ -19,7 +16,7 @@ public class ConjuntoSuperGnomo {
             if (this.ElSuperGnomo[i] == null) {
                 double x = 1920/2; 
                 double y = -70;          
-                this.ElSuperGnomo[i] = new SuperGnomo(x, y, 0.4, entorno);
+                this.ElSuperGnomo[i] = new SuperGnomo(x, y, 0.16, entorno);
             }
             this.ElSuperGnomo[i].dibujarEseSuperGnomo(ElSuperGnomo[i].getxInicial(), ElSuperGnomo[i].getyInicial());
         }

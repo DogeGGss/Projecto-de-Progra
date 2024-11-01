@@ -4,16 +4,17 @@ import entorno.Entorno;
 import entorno.InterfaceJuego;
 import java.awt.Toolkit;
 import java.awt.Color;
-import java.awt.Image;
 
 public class Juego extends InterfaceJuego {
     private Entorno entorno;
     final ConjuntoIslas miMapa;
     final Pep pep;
     final Conjuntognomos gnomos;
-   final Conjuntotortugas tortugas;
-   final ConjuntoDePoder fuego;
-   final ConjuntoSuperGnomo superGnomo;
+    final Conjuntotortugas tortugas;
+    final ConjuntoDePoder fuego;
+    final ConjuntoSuperGnomo superGnomo;
+    final ConjuntoBombaTortuga bombaTortuga;
+    final RecolectoraDeGnomos portal;
     
 
     Juego() {
@@ -53,8 +54,13 @@ public class Juego extends InterfaceJuego {
         this.fuego=new ConjuntoDePoder(entorno);
 
         //conjunto de super gnomos
-
         this.superGnomo= new ConjuntoSuperGnomo(entorno);
+
+        //conjunto de bombas de las tortugas
+        this.bombaTortuga= new ConjuntoBombaTortuga(entorno);
+
+        //Portal que recolecta gnomos
+        this.portal= new RecolectoraDeGnomos(950, 1035, entorno);
 
         //inicia el juego!
         this.entorno.iniciar();
@@ -288,6 +294,7 @@ public class Juego extends InterfaceJuego {
 
         //recorre el array de tortugas
         for (int i = 0; i < tortuga.length; i++) {
+            if(tortuga!=null){
             // Dimensiones de la tortuga
             double xTortuga = tortuga[i].getxInicial();
             double anchoTortuga = tortuga[i].getAncho();
@@ -308,6 +315,7 @@ public class Juego extends InterfaceJuego {
                 return true; // Hay colisión
             }
         }
+    }
         return false; // No hay colisión
     }
 
@@ -316,7 +324,7 @@ public class Juego extends InterfaceJuego {
         //analiza cada caso
         for (int i = 0; i < gnomo.length; i++) {
             // Verifica si el gnomo colisiona con Pep en las ultimas 2 filas de islas
-            if (GnomosSalvado(gnomo[i]) && gnomo[i].getyInicial() > 500) {
+            if ((GnomosSalvado(gnomo[i]) && gnomo[i].getyInicial() > 500)|| GnomosSalvadoPorElPortal(gnomo[i])) {
                 this.gnomos.contadorGnomosSalvados++; //aumenta el marcadores 
                 gnomo[i]=null;// Establece el gnomo como null
             }
@@ -396,6 +404,7 @@ public class Juego extends InterfaceJuego {
     // Verifica si el gnomo colisionó con una tortuga
     private boolean GnomoEliminado(Gnomos gnomo) {
         // Dimensiones del gnomo
+        if(gnomo!=null){
         double xGnomo = gnomo.getxInicial();
         double anchoGnomo = gnomo.getAncho();
         double yGnomo = gnomo.getyInicial();
@@ -436,6 +445,7 @@ public class Juego extends InterfaceJuego {
                 return true; // Hay colisión
             }
         }
+    }
         return false; // No hay colisión
     }
     
@@ -611,7 +621,7 @@ public class Juego extends InterfaceJuego {
         for (int i = 0; i < superGnomo.length; i++) {
 
             // Verifica si el super gnomo colisiona con Pep en las ultimas 2 filas de islas
-            if (superGnomosSalvado(superGnomo[i]) && superGnomo[i].getyInicial() > 500) {
+            if ((superGnomosSalvado(superGnomo[i]) && superGnomo[i].getyInicial() > 500)|| superGnomosSalvadoPorPortal(superGnomo[i])) {
                 this.gnomos.contadorGnomosSalvados++; //aumenta el marcadores 
                 this.pep.escudo=3;
                 superGnomo[i]=null;// Establece el gnomo como null
@@ -625,11 +635,100 @@ public class Juego extends InterfaceJuego {
         }
     }
 
+    //---------------------------------------------------------------------------
+    private void ColisionConBordesLateralesBomba(ConjuntoBombaTortuga bombas){
+       for(int i=0; i<bombas.bomba.length;i++){
 
+        //Toma las dimenciones de la bomba
+        double xBomba = bombas.bomba[i].getxInicial();
+        double anchoBomba =   bombas.bomba[i].getAncho();
+    
+        double bordeIzquierdoBomba= xBomba - anchoBomba / 2;
+        double bordeDerechoBomba = xBomba + anchoBomba / 2;
+
+        //segun la resolucion de la pantalla
+        if(bordeIzquierdoBomba<20){
+            bombas.bomba[i]=null; 
+        } else if(bordeDerechoBomba>1900){
+            bombas.bomba[i]=null; 
+        }
+      }
+    }
+    //---------------------------------------------------------------------------
+
+    private boolean GnomosSalvadoPorElPortal(Gnomos gnomo){
+
+        // Dimensiones del portal
+        double xPortal = portal.getxInicial();
+        double anchoPortal = portal.getAnchoPep();
+        double yPortal = portal.getyInicial();
+        double altoPortal = portal.getAltura();
+    
+        double bordeIzquierdoPortal = xPortal - anchoPortal / 2;
+        double bordeDerechoPortal = xPortal + anchoPortal / 2;
+        double cabezaPortal =yPortal - altoPortal / 2;
+        double piesPortal = yPortal + altoPortal/ 2;
+    
+            // Dimensiones del gnomo
+            double xGnomo = gnomo.getxInicial();
+            double anchoGnomo = gnomo.getAncho();
+            double yGnomo = gnomo.getyInicial();
+            double altoGnomo = gnomo.getAltura();
+    
+            // Bordes de la tortuga en x
+            double bordeIzquierdoGnomo = xGnomo - anchoGnomo/ 2;
+            double bordeDerechoGnomo =xGnomo +anchoGnomo / 2;
+            double cabezaGnomo = yGnomo - altoGnomo / 2;
+            double piesGnomo = yGnomo + altoGnomo / 2;
+    
+            // Verifica si hay colisión
+            if (!(bordeIzquierdoPortal > bordeDerechoGnomo || 
+                  bordeDerechoPortal < bordeIzquierdoGnomo || 
+                  cabezaPortal > piesGnomo || 
+                  piesPortal < cabezaGnomo)) {
+                return true; // Hay colisión
+            }
+        return false; // No hay colisión
+    }
+
+    private boolean superGnomosSalvadoPorPortal(SuperGnomo gnomo){
+
+         // Dimensiones del portal
+         double xPortal = portal.getxInicial();
+         double anchoPortal = portal.getAnchoPep();
+         double yPortal = portal.getyInicial();
+         double altoPortal = portal.getAltura();
+     
+         double bordeIzquierdoPortal = xPortal - anchoPortal / 2;
+         double bordeDerechoPortal = xPortal + anchoPortal / 2;
+         double cabezaPortal =yPortal - altoPortal / 2;
+         double piesPortal = yPortal + altoPortal/ 2;
+    
+            // Dimensiones del super gnomo
+       double xsuperGnomo = gnomo.getxInicial();
+       double anchosuperGnomo = gnomo.getAncho();
+       double ysuperGnomo = gnomo.getyInicial();
+       double altosuperGnomo = gnomo.getAltura();
+   
+       // Bordes del super gnomo
+       double bordeIzquierdosuperGnomo = xsuperGnomo- anchosuperGnomo / 2;
+       double bordeDerechosuperGnomo = xsuperGnomo + anchosuperGnomo / 2;
+       double cabezasuperGnomo = ysuperGnomo - altosuperGnomo / 2;
+       double piessuperGnomo =ysuperGnomo + altosuperGnomo / 2;
+    
+            // Verifica si hay colisión
+            if (!(bordeIzquierdoPortal > bordeDerechosuperGnomo || 
+                  bordeDerechoPortal < bordeIzquierdosuperGnomo || 
+                  cabezaPortal > piessuperGnomo || 
+                  piesPortal < cabezasuperGnomo)) {
+                return true; // Hay colisión
+            }
+        return false; // No hay colisión
+    }
 
     //dice si Pep colisiona con algo que le hace perder el juego
     private boolean PepSeMuere(){
-        if(PepConTortuga(this.tortugas.conjunTortugas) || pep.getY()>1080 || this.gnomos.contadorGnomosEliminados==15){
+        if(PepConTortuga(this.tortugas.conjunTortugas) || pep.getY()>1080 || this.gnomos.contadorGnomosEliminados==1500){
             return true;    
         }
         return false;
@@ -705,14 +804,16 @@ public class Juego extends InterfaceJuego {
         miMapa.dibujarFondo();
         miMapa.dibujarRectangulos();
 
-        //dibuja y crea a Pep, los gnomos y las tortugas
+        //dibuja y crea a Pep, los gnomos , las tortugas y el portal
         pep.dibujar();
         gnomos.dibujarGnomos();
         tortugas.dibujarTortugas();
         superGnomo.dibujarSuperGnomos();
+        portal.dibujarRecolectoraDeGnomos();
   
         //le da la capacidad de moverse a Pep
         pep.mover();
+
         //no deja que pep salga de pantalla
         ColisionConBordesLateralesPep();
         
@@ -738,7 +839,18 @@ public class Juego extends InterfaceJuego {
 
         //crea la bola de fuego
         this.fuego.crearBolaDeFuego(pep);
+
+        //---------------------------------------------------------------------------
+        //bomba de las tortugas(EXPLICACIÓN DE PORQUE ESTA COMENTADO)
+        //for(int i=0; i<this.tortugas.conjunTortugas.length;i++){
+        //    this.bombaTortuga.crearBomba(this.tortugas.conjunTortugas[i], i);
+        //}
         
+        //tipos de colisiones que tienen las bombas
+        //ColisionConBordesLateralesBomba(this.bombaTortuga);
+        //---------------------------------------------------------------------------
+
+
         //detecta si la bola de fuego colisiona con algo
         bolaDeFuegoColisioes(fuego.poderDeFuego);
 

@@ -26,8 +26,8 @@ public class SuperGnomo {
     this.yInicial=yInicial;
     this.escala=escala;
     this.entorno=entorno;
-    this.imagen1=Toolkit.getDefaultToolkit().getImage("Nasus derecha.png");
-    this.imagen2=Toolkit.getDefaultToolkit().getImage("Nasus izquierda.png");
+    this.imagen1=Toolkit.getDefaultToolkit().getImage("SuperGnomoDerecha.png");
+    this.imagen2=Toolkit.getDefaultToolkit().getImage("SuperGnomoIzquierda.png");
 
     //setea de forma aleatoria hacia donde mira el super gnomo
     Random rand = new Random();

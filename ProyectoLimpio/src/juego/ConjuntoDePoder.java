@@ -1,8 +1,6 @@
 package juego;
 
-import java.awt.Image;
 import entorno.Entorno;
-import java.awt.Toolkit;
 
 public class ConjuntoDePoder {
     final Entorno entorno;

@@ -68,6 +68,8 @@ public class Pep {
             xInicial -= velocidad; // Movimiento a la izquierda
             direccion = false; // Mirar a la izquierda
         }
+        
+        //Activa el escudo que da el super gnomo para protegerse de las bombas de las tortugas, solo tiene 3 usos
         if(entorno.estaPresionada('s')&&escudo>0){
             if(direccion){
                 entorno.dibujarImagen(escudito,xInicial+28,yInicial-10,0,0.45);
@@ -75,9 +77,7 @@ public class Pep {
                 entorno.dibujarImagen(escudito,xInicial-20,yInicial-10,0,0.45); 
 
             }
-           
         }
-
         // Lógica de salto
         if (entorno.sePresiono('w') && !enElAire) { // Asegúrate de que no esté en el aire
             velocidadVertical = -FUERZA_SALTO; // Aplica la fuerza hacia arriba

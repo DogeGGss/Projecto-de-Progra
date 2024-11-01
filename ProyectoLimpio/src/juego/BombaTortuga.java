@@ -4,43 +4,43 @@ import java.awt.Image;
 import entorno.Entorno;
 import java.awt.Toolkit;
 
-public class Boladefuego {
-
-    private double xInicial; // Posición inicial de la bola de fuego en el eje X
-    private double yInicial; // Posición inicial de la bola de fuego en el eje Y
-    private double escala = 0.5;   // Escala para dibujar la imagen de la bola de fuego
-    public double velocidad = 3; // Velocidad de movimiento de la bola de fuego
-    private Image imagen1; // Imagende la bola de fuego mirando a la derecha
-    private Image imagen2; // Imagen de la bola de fuego mirando a la izquierda
+public class BombaTortuga {
+    private double xInicial; // Posición inicial de la bomba en el eje X
+    private double yInicial; // Posición inicial de la  bomba en el eje Y
+    private double escala = 0.2;   // Escala para dibujar la imagen de la  bomba
+    public double velocidad = 2; // Velocidad de movimiento de la  bomba
+    private Image imagen1; // Imagen de la bomba mirando a la derecha
+    private Image imagen2; // Imagen de la bomba mirando a la izquierda
     public Image imagenInicial; //imagen con el sentido establecido por la direccion
     private Entorno entorno; // Referencia al entorno de juego
     public boolean direccion; //true si mira a la derecha, flase a la izquierda
+    public boolean estaTortugaColisionando; //solo sale la bomba cuando la tortuga este sobre una isla
 
 
-    //constructor de la bola de fuego
-    public Boladefuego(double xInicial,double yInicial,Entorno entorno,boolean direccion){
+    //constructor de la bomba
+    public BombaTortuga(double xInicial,double yInicial,Entorno entorno,boolean direccion){
     this.xInicial=xInicial;
     this.yInicial=yInicial;
     this.entorno=entorno;
-    this.imagen1=Toolkit.getDefaultToolkit().getImage("BolaDefuego.gif");
-    this.imagen2=Toolkit.getDefaultToolkit().getImage("BolaDUfuego.gif");
+    this.imagen1=Toolkit.getDefaultToolkit().getImage("bomba  derecha.png");
+    this.imagen2=Toolkit.getDefaultToolkit().getImage("bomba izquierda.png");
     this.direccion=direccion;
     }
     
-    //dibuja la bola de fuego usando la imagen segun su direccion
-    public void dibujarboladefuego(){
+    //dibuja la bomba usando la imagen segun su direccion
+    public void dibujarBomba(){
         if(direccion){
-            this.imagenInicial=imagen1;
+            this.imagenInicial=imagen1; //derecha
         } else {
-            this.imagenInicial=imagen2;  
+            this.imagenInicial=imagen2; //izquierda
         }
        
         entorno.dibujarImagen(imagenInicial,xInicial,yInicial,0,escala);
-        moverBola();
+        moverBomba();
     }  
     
-    //mueve la bola de fuego 
-    public void moverBola() {   
+    //mueve la bomba constantemente en x
+    public void moverBomba() {   
         if (direccion) {
             xInicial += velocidad*2; // Movimiento a la derecha
         } else {
@@ -120,12 +120,12 @@ public class Boladefuego {
     public void setDireccion(boolean direccion) {
         this.direccion = direccion;
     }
-
+ 
     public int getAltura() {
         return (int) (imagen1.getHeight(null) * escala); 
     }
     public int getAncho() {
         return (int) (imagen1.getWidth(null) * escala); 
     }
-
+    
 }
