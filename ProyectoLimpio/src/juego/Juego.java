@@ -319,6 +319,47 @@ public class Juego extends InterfaceJuego {
         return false; // No hay colisión
     }
 
+    private boolean EscudoColisionTortuga(Tortugas[] tortuga) {
+
+        // Dimensiones del escudo
+        double xEscudo = pep.getXInicial();
+        double anchoEscudo = pep.getAnchoPep()+20;
+        double yEscudo= pep.getY();
+        double altoEscudo = pep.getAltura()+20;
+        
+        //bordes del escudo
+        double bordeIzquierdoEscudo = xEscudo- anchoEscudo / 2;
+        double bordeDerechoEscudo = xEscudo + anchoEscudo / 2;
+        double cabezaEscudo = yEscudo - altoEscudo/ 2;
+        double piesEscudo = yEscudo + altoEscudo / 2;
+
+        //recorre el array de tortugas
+        for (int i = 0; i < tortuga.length; i++) {
+           
+            // Dimensiones de la tortuga
+            double xTortuga = tortuga[i].getxInicial();
+            double anchoTortuga = tortuga[i].getAncho();
+            double yTortuga = tortuga[i].getyInicial();
+            double altoTortuga = tortuga[i].getAltura();
+    
+            // Bordes de la tortuga
+            double bordeIzquierdoTortuga = xTortuga - anchoTortuga / 2;
+            double bordeDerechoTortuga = xTortuga + anchoTortuga / 2;
+            double cabezaTortuga = yTortuga - altoTortuga / 2;
+            double piesTortuga = yTortuga + altoTortuga / 2;
+            // Verifica si hay colisión
+            if (!(bordeIzquierdoEscudo > bordeDerechoTortuga || 
+            bordeDerechoEscudo < bordeIzquierdoTortuga || 
+            cabezaEscudo > piesTortuga || 
+            piesEscudo < cabezaTortuga)) {
+                return true;
+                 // Hay colisión
+            }
+    }
+        return false;
+        // No hay colisión
+    }
+
     //verifica si el gnomo fue colisionado por Pep, por una tortuga o se tiró al vacio
     private void queGnomoFueEliminado(Gnomos[] gnomo) {
         //analiza cada caso
@@ -394,6 +435,7 @@ public class Juego extends InterfaceJuego {
         for (int i = 0; i < bolasDeFuego.length; i++) {
             if (bolasDeFuego[i] != null) {
              if(bolaDeFuegoTocaBorde(bolasDeFuego[i])||bolaDeFuegoColisionTortuga(bolasDeFuego[i])){
+                this.fuego.flag=false;
                 bolasDeFuego[i] = null;
              }
             }
@@ -726,35 +768,6 @@ public class Juego extends InterfaceJuego {
         return false; // No hay colisión
     }
 
-    //dice si Pep colisiona con algo que le hace perder el juego
-    private boolean PepSeMuere(){
-        if(PepConTortuga(this.tortugas.conjunTortugas) || pep.getY()>1080 || this.gnomos.contadorGnomosEliminados==1500){
-            return true;    
-        }
-        return false;
-    }
-
-    //dice si pep ganó o perdió el juego
-    private void PepCondicion(){
-        //si se muere pierde el juego
-        if(PepSeMuere()){
-            pep.finDelJuego=true;
-        }
-        if(pep.finDelJuego){
-            //muestra en pantalla que perdió
-            entorno.dibujarImagen(Toolkit.getDefaultToolkit().getImage("Derrota.jpg"), 960, 530, 0, 2);
-        }
-        //si salva a la cantidad de gnomos establecidos, gana! :D/
-        if(this.gnomos.contadorGnomosSalvados==15){
-            pep.ganoElJuego=true;
-        }
-        if(pep.ganoElJuego){
-            //muestra en pantalla que ganó
-            entorno.dibujarImagen(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\victoria3.jpg"), 960, 530, 0, 1.8);
-        }
-
-    }
-
     //calcula los minutos y segundos transcurridos
     private String tiempoTranscurrido() {
         int milisegundos = entorno.tiempo();
@@ -798,6 +811,120 @@ public class Juego extends InterfaceJuego {
        
     }
 
+    //Permite el movimiento del portal con las flechitas
+    public void moverRecolectoraDeGnomos() {
+        if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
+            this.portal.xInicial += this.portal.velocidad; // Movimiento a la derecha
+        }
+        if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
+            this.portal.xInicial -= this.portal.velocidad;// Movimiento a la izquierda
+        }
+    }
+
+    //Movimiento de Pep
+    public void moverPep() {
+        // Lógica de movimiento horizontal
+        if(!entorno.estaPresionada('w')&&!this.pep.enElAire){
+        if (entorno.estaPresionada('d')) {
+            this.pep.xInicial += this.pep.velocidad; // Movimiento a la derecha
+            this.pep.direccion = true; // Mirar a la derecha
+        }
+        if (entorno.estaPresionada('a')) {
+            this.pep.xInicial -=this.pep.velocidad; // Movimiento a la izquierda
+            this.pep.direccion = false; // Mirar a la izquierda
+        }
+    }
+        
+        //Activa el escudo que da el super gnomo para protegerse de las tortugas, solo tiene 3 usos
+        if(entorno.estaPresionada('s')&&this.pep.escudo>0){
+            this.pep.escudoArriba=true;
+            if(this.pep.direccion){
+                entorno.dibujarImagen(this.pep.escudito,this.pep.xInicial+28,this.pep.yInicial-10,0,0.45);
+            } else {
+                entorno.dibujarImagen(this.pep.escudito,this.pep.xInicial-20,this.pep.yInicial-10,0,0.45); 
+            }
+        } else {
+            this.pep.escudoArriba=false;
+        }
+        // Lógica de salto
+        if (entorno.sePresiono(entorno.TECLA_ARRIBA)||entorno.sePresiono('w') && !this.pep.enElAire) { // Asegúrate de que no esté en el aire
+            this.pep.velocidadVertical = -this.pep.FUERZA_SALTO; // Aplica la fuerza hacia arriba
+            this.pep.enElAire = true; // Marca que está en el aire
+        }
+
+        this.pep.aplicarGravedad(); // Aplicar gravedad a Pep
+
+        // Mueve a Pep verticalmente
+        this.pep.yInicial += this.pep.velocidadVertical;
+
+        if (this.pep.colision) {
+            // Si hay colisión, ajusta la posición de Pep para que no atraviese la isla
+            if (this.pep.velocidadVertical > 0) { // Si Pep está cayendo
+                this.pep.enElAire = false; // Ya no está en el aire
+                this.pep.velocidadVertical = 0; // Resetea la velocidad vertical al aterrizar
+            }
+        } else {
+            // Si no hay colisión y está en el aire, aplica gravedad
+            this.pep.enElAire = true;
+        }
+    }
+
+    private char sePrecionoBotonIzquierdo(){
+        if(entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO) && !this.fuego.flag){
+            this.fuego.flag=true;
+            return 'c';
+        }
+        return 'n';
+
+    }
+
+        //crea la bola de fuego si el usuario apretó la c y no hay ninguna bola de fuego en pantalla
+        public void crearBolaDeFuego(Pep pep){
+            
+            if((sePrecionoBotonIzquierdo()=='c'&& this.fuego.flag) ||entorno.sePresiono('c')&& this.fuego.poderDeFuego[0]==null){
+                //la bola de fuego comienza en la ubicacion de pep
+                this.fuego.xInicial=pep.getXInicial();
+                this.fuego.yInicial=pep.getY();
+                this.fuego.poderDeFuego[0]= new Boladefuego(this.fuego.xInicial, this.fuego.yInicial, entorno, pep.direccion);
+            } 
+            if( this.fuego.poderDeFuego[0]!=null){
+                this.fuego.poderDeFuego[0].dibujarboladefuego();
+            }
+        }
+
+    //dice si Pep colisiona con algo que le hace perder el juego
+    private boolean PepSeMuere(){
+        if(PepConTortuga(this.tortugas.conjunTortugas) || pep.getY()>1080 || this.gnomos.contadorGnomosEliminados==25){
+            return true;    
+        }
+        return false;
+    }
+
+    //dice si pep ganó o perdió el juego
+    private void PepCondicion(){
+        //si se muere pierde el juego
+        if(EscudoColisionTortuga(this.tortugas.conjunTortugas)&& this.pep.escudoArriba){
+            this.pep.xInicial=590;
+            this.pep.yInicial=657;
+            this.pep.escudo--;
+        } else if (PepSeMuere()){
+            pep.finDelJuego=true;
+        }
+        if(pep.finDelJuego){
+            //muestra en pantalla que perdió
+            entorno.dibujarImagen(Toolkit.getDefaultToolkit().getImage("Derrota.jpg"), 960, 530, 0, 2);
+        }
+        //si salva a la cantidad de gnomos establecidos, gana! :D/
+        if(this.gnomos.contadorGnomosSalvados==15){
+            pep.ganoElJuego=true;
+        }
+        if(pep.ganoElJuego){
+            //muestra en pantalla que ganó
+            entorno.dibujarImagen(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Rodrigo\\Desktop\\progra  1 tp\\Projecto-de-Progra\\ProyectoLimpio\\victoria3.jpg"), 960, 530, 0, 1.8);
+        }
+
+    }
+
     
     public void tick() {
         //dibuja y crea el fondo y las islas
@@ -812,7 +939,7 @@ public class Juego extends InterfaceJuego {
         portal.dibujarRecolectoraDeGnomos();
   
         //le da la capacidad de moverse a Pep
-        pep.mover();
+        moverPep();
 
         //no deja que pep salga de pantalla
         ColisionConBordesLateralesPep();
@@ -824,7 +951,8 @@ public class Juego extends InterfaceJuego {
         }
         superGnomo.ElSuperGnomo[0].moverSuperGnomo();
       
-        //verifica si se encuentran sobre una isla para Pep, Tortugas y gnomos
+        //verifica si se encuentran sobre una isla para Pep, Tortugas  gnomos y el escudo
+        
         verificarColisionesTortugas(this.tortugas.conjunTortugas); 
         VerificarColision(); 
         verificarColisionesGnomos(this.gnomos.Todoslosgnomos); 
@@ -838,7 +966,7 @@ public class Juego extends InterfaceJuego {
         Marcadores();
 
         //crea la bola de fuego
-        this.fuego.crearBolaDeFuego(pep);
+        crearBolaDeFuego(pep);
 
         //---------------------------------------------------------------------------
         //bomba de las tortugas(EXPLICACIÓN DE PORQUE ESTA COMENTADO)
@@ -849,8 +977,10 @@ public class Juego extends InterfaceJuego {
         //tipos de colisiones que tienen las bombas
         //ColisionConBordesLateralesBomba(this.bombaTortuga);
         //---------------------------------------------------------------------------
-
-
+       
+        //
+        moverRecolectoraDeGnomos();
+ 
         //detecta si la bola de fuego colisiona con algo
         bolaDeFuegoColisioes(fuego.poderDeFuego);
 

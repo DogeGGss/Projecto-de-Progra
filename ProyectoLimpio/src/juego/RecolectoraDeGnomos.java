@@ -6,8 +6,8 @@ import java.awt.Toolkit;
 
 
 public class RecolectoraDeGnomos {
-    private double xInicial; // Posición inicial de la recolectora de gnomos en el eje X
-    private double yInicial; // Posición inicial de la recolectora de gnomos en el eje Y
+    public double xInicial; // Posición inicial de la recolectora de gnomos en el eje X
+    public double yInicial; // Posición inicial de la recolectora de gnomos en el eje Y
     private double escala = 1;   // Escala para dibujar la imagen de la recolectora de gnomos
     public double velocidad = 6.3; // Velocidad de movimiento de la recolectora de gnomos
     private Image imagen; // Imagende la recolectora de gnomos mirando a la derecha
@@ -26,7 +26,7 @@ public class RecolectoraDeGnomos {
     //dibuja la recolectora de gnomos
     public void dibujarRecolectoraDeGnomos(){
         entorno.dibujarImagen(imagen,xInicial,yInicial,0,escala);
-        moverRecolectoraDeGnomos();
+       // moverRecolectoraDeGnomos();
     }  
     
     //mueve la recolectora de gnomos segun la tecla que fue precionada

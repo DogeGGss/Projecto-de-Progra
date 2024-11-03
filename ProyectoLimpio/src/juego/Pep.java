@@ -7,13 +7,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class Pep {
-    private double xInicial; // Posición inicial de Pep en el eje X
-    private double yInicial; // Posición inicial de Pep en el eje Y
+    public double xInicial; // Posición inicial de Pep en el eje X
+    public double yInicial; // Posición inicial de Pep en el eje Y
     private double escala;   // Escala para dibujar la imagen de Pep
     public double velocidad = 5; // Velocidad de movimiento de Pep
     public boolean enElAire = true; // Variable para verificar si Pep está en el aire
-    private final double FUERZA_SALTO = 10; // Fuerza del salto
-    private double velocidadVertical = 0; // Velocidad vertical de Pep
+    public final double FUERZA_SALTO = 10; // Fuerza del salto
+    public double velocidadVertical = 0; // Velocidad vertical de Pep
     private Image imagen1; // Imagen de Pep mirando a la derecha
     private Image imagen2; // Imagen de Pep mirando a la izquierda
     public boolean direccion; // True si Pep mira a la derecha, false si a la izquierda
@@ -24,7 +24,8 @@ public class Pep {
     public boolean ganoElJuego=false;//si ganó el juego
     private final float MAX_VELOCIDAD_VERTICAL = 5.0f; // Limita la velocidad vertical
     public int escudo=0;
-    private Image escudito;
+    public Image escudito;
+    public boolean escudoArriba;
 
     // Constructor de la clase Pep
     public Pep(double xInicial, double yInicial, double angulo, double escala, Entorno entorno) {
@@ -60,6 +61,7 @@ public class Pep {
     // Método para mover a Pep
     public void mover() {
         // Lógica de movimiento horizontal
+        if(!entorno.estaPresionada('w')&&!enElAire){
         if (entorno.estaPresionada('d')) {
             xInicial += velocidad; // Movimiento a la derecha
             direccion = true; // Mirar a la derecha
@@ -68,6 +70,7 @@ public class Pep {
             xInicial -= velocidad; // Movimiento a la izquierda
             direccion = false; // Mirar a la izquierda
         }
+    }
         
         //Activa el escudo que da el super gnomo para protegerse de las bombas de las tortugas, solo tiene 3 usos
         if(entorno.estaPresionada('s')&&escudo>0){
