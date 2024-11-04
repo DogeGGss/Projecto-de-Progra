@@ -1188,7 +1188,7 @@ public class Juego extends InterfaceJuego {
         //PepCondicion2();
         //---------------------------------------------------------------------------
        
-        //
+        //mueve el portal que ayuda a pep a salvar a los gnomos
         moverRecolectoraDeGnomos();
  
         //detecta si la bola de fuego colisiona con algo
