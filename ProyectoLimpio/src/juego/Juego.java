@@ -442,7 +442,6 @@ public class Juego extends InterfaceJuego {
         }
     }
 
-
     // Verifica si el gnomo colisionó con una tortuga
     private boolean GnomoEliminado(Gnomos gnomo) {
         // Dimensiones del gnomo
@@ -696,6 +695,216 @@ public class Juego extends InterfaceJuego {
         }
       }
     }
+
+    private boolean ColisionBombaConPep(ConjuntoBombaTortuga bombas){
+
+        // Dimensiones de Pep
+        double xPep = pep.getXInicial();
+        double anchoPep = pep.getAnchoPep();
+        double yPep = pep.getY();
+        double altoPep = pep.getAltura();
+    
+        double bordeIzquierdoPep = xPep - anchoPep / 2;
+        double bordeDerechoPep = xPep + anchoPep / 2;
+        double cabezaPep = yPep - altoPep / 2;
+        double piesPep = yPep + altoPep / 2;
+       
+        for(int i=0; i<bombas.bomba.length;i++){
+       // dimenciones de la bomba
+       double xBomba = bombas.bomba[i].getxInicial();
+       double anchoBomba =   bombas.bomba[i].getAncho();
+       double yBomba=bombas.bomba[i].getyInicial();
+       double altoBomba=bombas.bomba[i].getAltura();
+   
+       double bordeIzquierdoBomba= xBomba - anchoBomba / 2;
+       double bordeDerechoBomba = xBomba + anchoBomba / 2;
+       double cabezaBomba=yBomba-altoBomba/2;
+       double piesBomba=yBomba+altoBomba/2;
+            // Verifica si hay colisión
+            if (!(bordeIzquierdoPep >bordeDerechoBomba|| 
+               bordeDerechoPep < bordeIzquierdoBomba || 
+                   cabezaPep >piesBomba|| 
+                   piesPep < cabezaBomba)) {
+                return true; // Hay colisión
+            }
+        }
+        return false; // No hay colisión
+    }
+
+    //dice si la bomba colisionó con el escudo
+    private boolean EscudoActivadoContraBomba(ConjuntoBombaTortuga bombas){
+            // Dimensiones del escudo
+            double xEscudo = pep.getXInicial();
+            double anchoEscudo = pep.getAnchoPep()+30;
+            double yEscudo=pep.getY();
+            double altoEscudo= pep.getAnchoPep()+30;
+            //bordes del escudo
+            double bordeIzquierdoEscudo = xEscudo- anchoEscudo / 2;
+            double bordeDerechoEscudo = xEscudo + anchoEscudo / 2;
+            double cabezaEscudo = yEscudo- altoEscudo / 2;
+            double piesEscudo = yEscudo + altoEscudo / 2;
+            //recorre el array de tortugas
+             for(int i=0; i<bombas.bomba.length;i++){
+               
+                 // dimenciones de la bomba
+                double xBomba = bombas.bomba[i].getxInicial();
+                double anchoBomba =   bombas.bomba[i].getAncho();
+                double yBomba=bombas.bomba[i].getyInicial();
+                double altoBomba=bombas.bomba[i].getAltura();
+            
+                double bordeIzquierdoBomba= xBomba - anchoBomba / 2;
+                double bordeDerechoBomba = xBomba + anchoBomba / 2;
+                double cabezaBomba=yBomba-altoBomba/2;
+                double piesBomba=yBomba+altoBomba/2;
+                // Verifica si hay colisión
+                if (!(bordeIzquierdoEscudo >bordeDerechoBomba|| 
+                bordeDerechoEscudo < bordeIzquierdoBomba|| 
+                cabezaEscudo>piesBomba|| 
+                piesEscudo < cabezaBomba)) {
+                    return true; // Hay colisión
+                }
+             }
+             return false; // No hay colisión
+        }
+
+    //devuelve el indice de la bomba que chocó con el escudo
+    private int queBombaChocóConEscudo(ConjuntoBombaTortuga bombas){
+            // Dimensiones del escudo
+            double xEscudo = pep.getXInicial();
+            double anchoEscudo = pep.getAnchoPep()+20;
+            
+            //bordes del escudo
+            double bordeIzquierdoEscudo = xEscudo- anchoEscudo / 2;
+            double bordeDerechoEscudo = xEscudo + anchoEscudo / 2;
+
+            //recorre el array de tortugas
+             for(int i=0; i<bombas.bomba.length;i++){
+               
+                 // dimenciones de la bomba
+                double xBomba = bombas.bomba[i].getxInicial();
+                double anchoBomba =   bombas.bomba[i].getAncho();
+            
+                double bordeIzquierdoBomba= xBomba - anchoBomba / 2;
+                double bordeDerechoBomba = xBomba + anchoBomba / 2;
+                // Verifica si hay colisión
+                if (!(bordeIzquierdoEscudo >bordeDerechoBomba|| 
+                bordeDerechoEscudo < bordeIzquierdoBomba)) {
+                    return i; // Hay colisión
+                }
+             }
+             return 5; // No hay colisión
+    }
+
+    //dice si una bomba colisiono con una bomba de fuego
+    private boolean ColisionBombaConFuego(ConjuntoBombaTortuga bombas, Boladefuego bolaDeFuego){
+            //dimenciones de la bola de fuego
+            double xBolaDeFuego =bolaDeFuego.getxInicial();
+            double anchoBolaDeFuego = bolaDeFuego.getAncho();
+
+            double bordeIzquierdoBolaDeFuego = xBolaDeFuego -anchoBolaDeFuego / 2;
+            double bordeDerechoBolaDeFuego = xBolaDeFuego + anchoBolaDeFuego / 2;
+            //analiza en cada caso a las tortugas
+            //recorre el array de tortugas
+            for(int i=0; i<bombas.bomba.length;i++){
+                    
+                // dimenciones de la bomba
+            double xBomba = bombas.bomba[i].getxInicial();
+            double anchoBomba =   bombas.bomba[i].getAncho();
+        
+            double bordeIzquierdoBomba= xBomba - anchoBomba / 2;
+            double bordeDerechoBomba = xBomba + anchoBomba / 2;
+            // Verifica si hay colisión
+            if (!(bordeIzquierdoBolaDeFuego >bordeDerechoBomba|| 
+            bordeDerechoBolaDeFuego < bordeIzquierdoBomba)) {
+                return true; // Hay colisión
+               }
+            }
+            return false; // No hay colisión
+    } 
+    
+
+
+    private void ColisionBombaConGnomoOSuperGnomo(BombaTortuga bomba){
+
+            // dimenciones de la bomba
+            double xBomba = bomba.getxInicial();
+            double anchoBomba = bomba.getAncho();
+            double yBomba=bomba.getyInicial();
+            double altoBomba=bomba.getAltura();
+        
+            double bordeIzquierdoBomba= xBomba - anchoBomba / 2;
+            double bordeDerechoBomba = xBomba + anchoBomba / 2;
+            double cabezaBomba=yBomba-altoBomba/2;
+            double piesBomba=yBomba+altoBomba/2;
+    
+            //recorre a todos los gnomos y analiza su situacion 
+     for(int i=0;i<this.gnomos.Todoslosgnomos.length;i++){
+                  // Dimensiones del gnomo
+        double xGnomo = this.gnomos.Todoslosgnomos[i].getxInicial();
+        double anchoGnomo = this.gnomos.Todoslosgnomos[i].getAncho();
+        double yGnomo = this.gnomos.Todoslosgnomos[i].getyInicial();
+        double altoGnomo = this.gnomos.Todoslosgnomos[i].getAltura();
+    
+        // Bordes del gnomo
+        double bordeIzquierdoGnomo = xGnomo- anchoGnomo / 2;
+        double bordeDerechoGnomo = xGnomo + anchoGnomo / 2;
+        double cabezaGnomo = yGnomo - altoGnomo / 2;
+        double piesGnomo =yGnomo + altoGnomo / 2;
+     
+             // Verifica si hay colisión
+             if (!(bordeIzquierdoBomba > bordeDerechoGnomo || 
+             bordeDerechoBomba  < bordeIzquierdoGnomo || 
+             cabezaBomba > piesGnomo || 
+             piesBomba < cabezaGnomo)) {
+                this.gnomos.Todoslosgnomos[i]=null;
+                bomba=null;
+                 
+             }
+            }
+            // Dimensiones del super gnomo
+            double xsuperGnomo = this.superGnomo.ElSuperGnomo[0].getxInicial();
+            double anchosuperGnomo = this.superGnomo.ElSuperGnomo[0].getAncho();
+            double ysuperGnomo = this.superGnomo.ElSuperGnomo[0].getyInicial();
+            double altosuperGnomo = this.superGnomo.ElSuperGnomo[0].getAltura();
+        
+            // Bordes del super gnomo
+            double bordeIzquierdosuperGnomo = xsuperGnomo- anchosuperGnomo / 2;
+            double bordeDerechosuperGnomo = xsuperGnomo + anchosuperGnomo / 2;
+            double cabezasuperGnomo = ysuperGnomo - altosuperGnomo / 2;
+            double piessuperGnomo =ysuperGnomo + altosuperGnomo / 2;
+        
+            // Verifica si hay colisión
+            if (!(bordeIzquierdoBomba > bordeDerechosuperGnomo || 
+            bordeDerechoBomba < bordeIzquierdosuperGnomo || 
+            cabezaBomba > piessuperGnomo || 
+                    piesBomba < cabezasuperGnomo)) {
+                    bomba=null;// Hay colisión
+                    this.superGnomo.ElSuperGnomo[0]=null;
+            }
+        
+     }
+
+    private void PepCondicion2(){
+        //llama a la funcion simplemente
+        ColisionConBordesLateralesBomba(this.bombaTortuga);
+
+        for(int i=0; i<this.bombaTortuga.bomba.length;i++){
+            ColisionBombaConGnomoOSuperGnomo(this.bombaTortuga.bomba[i]);
+        }
+
+        //si la bomba colisiona con pep, pierde
+        if(EscudoActivadoContraBomba(this.bombaTortuga) && this.pep.escudoArriba ){
+            this.pep.escudo--;
+            this.bombaTortuga.bomba[queBombaChocóConEscudo(this.bombaTortuga)]=null;
+        } else if(ColisionBombaConPep(this.bombaTortuga)){
+            pep.finDelJuego=true;
+        }
+        if(ColisionBombaConFuego(this.bombaTortuga,this.fuego.poderDeFuego[0])){
+            this.bombaTortuga.bomba[queBombaChocóConEscudo(this.bombaTortuga)]=null;
+            this.fuego.poderDeFuego[0]=null;
+        }
+
+    }
     //---------------------------------------------------------------------------
 
     private boolean GnomosSalvadoPorElPortal(Gnomos gnomo){
@@ -914,8 +1123,8 @@ public class Juego extends InterfaceJuego {
             //muestra en pantalla que perdió
             entorno.dibujarImagen(Toolkit.getDefaultToolkit().getImage("Derrota.jpg"), 960, 530, 0, 2);
         }
-        //si salva a la cantidad de gnomos establecidos, gana! :D/
-        if(this.gnomos.contadorGnomosSalvados==15){
+        //si salva a la cantidad de gnomos establecidos, ganaste el juego! :D/
+        if(this.gnomos.contadorGnomosSalvados==10){
             pep.ganoElJuego=true;
         }
         if(pep.ganoElJuego){
@@ -971,11 +1180,12 @@ public class Juego extends InterfaceJuego {
         //---------------------------------------------------------------------------
         //bomba de las tortugas(EXPLICACIÓN DE PORQUE ESTA COMENTADO)
         //for(int i=0; i<this.tortugas.conjunTortugas.length;i++){
-        //    this.bombaTortuga.crearBomba(this.tortugas.conjunTortugas[i], i);
+        //   this.bombaTortuga.crearBomba(this.tortugas.conjunTortugas[i], i);
         //}
         
         //tipos de colisiones que tienen las bombas
         //ColisionConBordesLateralesBomba(this.bombaTortuga);
+        //PepCondicion2();
         //---------------------------------------------------------------------------
        
         //
@@ -986,6 +1196,7 @@ public class Juego extends InterfaceJuego {
 
         //evalua si perdimos o ganamos el juego
         PepCondicion();
+    
 
     }
 

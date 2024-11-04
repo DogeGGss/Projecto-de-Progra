@@ -12,7 +12,7 @@ public class RecolectoraDeGnomos {
     public double velocidad = 6.3; // Velocidad de movimiento de la recolectora de gnomos
     private Image imagen; // Imagende la recolectora de gnomos mirando a la derecha
     private Entorno entorno; // Referencia al entorno de juego
-    public boolean direccion; //true si mira a la derecha, flase a la izquierda
+    
 
 
     //constructor de la recolectora de gnomos
@@ -29,15 +29,6 @@ public class RecolectoraDeGnomos {
        // moverRecolectoraDeGnomos();
     }  
     
-    //mueve la recolectora de gnomos segun la tecla que fue precionada
-    public void moverRecolectoraDeGnomos() {   
-        if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
-            xInicial += velocidad; // Movimiento a la derecha
-        }
-        if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
-            xInicial -= velocidad; // Movimiento a la izquierda
-        }
-    }
     
     //getters y setters
     public double getxInicial() {
@@ -86,14 +77,6 @@ public class RecolectoraDeGnomos {
 
     public void setEntorno(Entorno entorno) {
         this.entorno = entorno;
-    }
-
-    public boolean isDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(boolean direccion) {
-        this.direccion = direccion;
     }
 
     public int getAltura() {

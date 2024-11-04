@@ -55,54 +55,7 @@ public class Pep {
         }
        // if(escudo>0){
         //    entorno.dibujarImagen(escudito,xInicial,yInicial,0,0.09);  }
-       
     }
-    
-    // Método para mover a Pep
-    public void mover() {
-        // Lógica de movimiento horizontal
-        if(!entorno.estaPresionada('w')&&!enElAire){
-        if (entorno.estaPresionada('d')) {
-            xInicial += velocidad; // Movimiento a la derecha
-            direccion = true; // Mirar a la derecha
-        }
-        if (entorno.estaPresionada('a')) {
-            xInicial -= velocidad; // Movimiento a la izquierda
-            direccion = false; // Mirar a la izquierda
-        }
-    }
-        
-        //Activa el escudo que da el super gnomo para protegerse de las bombas de las tortugas, solo tiene 3 usos
-        if(entorno.estaPresionada('s')&&escudo>0){
-            if(direccion){
-                entorno.dibujarImagen(escudito,xInicial+28,yInicial-10,0,0.45);
-            } else {
-                entorno.dibujarImagen(escudito,xInicial-20,yInicial-10,0,0.45); 
-
-            }
-        }
-        // Lógica de salto
-        if (entorno.sePresiono('w') && !enElAire) { // Asegúrate de que no esté en el aire
-            velocidadVertical = -FUERZA_SALTO; // Aplica la fuerza hacia arriba
-            enElAire = true; // Marca que está en el aire
-        }
-
-        aplicarGravedad(); // Aplicar gravedad a Pep
-
-        // Mueve a Pep verticalmente
-        yInicial += velocidadVertical;
-
-        if (colision) {
-            // Si hay colisión, ajusta la posición de Pep para que no atraviese la isla
-            if (velocidadVertical > 0) { // Si Pep está cayendo
-                enElAire = false; // Ya no está en el aire
-                velocidadVertical = 0; // Resetea la velocidad vertical al aterrizar
-            }
-        } else {
-            // Si no hay colisión y está en el aire, aplica gravedad
-            enElAire = true;
-        }
-}
 
 // Método para aplicar gravedad
 public void aplicarGravedad() {
